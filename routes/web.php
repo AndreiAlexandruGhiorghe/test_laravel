@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,17 +15,4 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('/testDB', function() {
-    $products = App\Product::all();
-    $orders = App\Order::find(1);
-
-    $returnValue = [
-        $products[1]->orders()->select('order_products.id')->get(),
-        $products[0]->orders(),
-        $orders,
-        \App\OrderProduct::class
-    ];
-    return $returnValue;
 });
