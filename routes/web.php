@@ -18,3 +18,5 @@ Route::get('/', function () {
 });
 
 Route::match(['get', 'post'], '/index', 'IndexController@show')->name('index');
+
+Route::match(['get', 'post'], '/cart', 'CartController@show')->name('cart');
