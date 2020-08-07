@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
-use Illuminate\Support\Facades\App;
 
 class IndexController extends Controller
 {
@@ -25,21 +24,7 @@ class IndexController extends Controller
         }
 
         if (isset($myCart) && is_array($myCart) && count($myCart)) {
-            // building the query for the products from cart that
-            $params = [];
-            $queryString = 'inventory > CASE ';
-            foreach ($myCart as $idProduct => $quantity) {
-                $queryString .= 'WHEN id = ? THEN ? ';
-                $params[] = $idProduct;
-                $params[] = $quantity;
-            }
-            $queryString .= ' END;';
-
-            // get the data from the table
-            $productsList = Product::select('*')
-                ->whereNotIn('id', array_keys($myCart))
-                ->orWhereRaw($queryString, $params)
-                ->get();
+            $productsList = Product::productsOutsideCart($myCart)->get();
         } else {
             $productsList = Product::all();
         }

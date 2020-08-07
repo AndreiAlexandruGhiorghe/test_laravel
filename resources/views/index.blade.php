@@ -22,7 +22,7 @@
                                 : 0) }} {{ __('left') }}<br>
                         </td>
                         <td>
-                            <form method="post" action="/index">
+                            <form method="post" action="{{ route('index') }}">
                                 @csrf
                                 <input type="hidden" name="idProduct" value="{{ $productsList[$i]['id'] }}">
                                 <button type="submit" class="linkButton"> {{ __('Add') }} </button>
@@ -32,7 +32,7 @@
                 @endfor
                 <tr>
                     <td>
-                        <a href="/cart"> {{ __('Go to cart') }} </a>
+                        <a href="{{ route('cart') }}"> {{ __('Go to cart') }} </a>
                     </td>
                 </tr>
         </tbody>
