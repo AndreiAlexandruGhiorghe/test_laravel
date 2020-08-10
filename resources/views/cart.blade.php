@@ -22,28 +22,30 @@
                         : 0) }} {{ __('left') }}<br>
                 </td>
                 <td>
-                    <form method="post" action="{{ route('cart') }}">
+                    <form method="post" action="{{ route('removeFromCart', ['product' => $productsList[$i]['id']]) }}">
                         @csrf
-                        <input type="hidden" name="idProduct" value="{{ $productsList[$i]['id'] }}">
+                        @method('DELETE')
                         <button type="submit" class="linkButton"> {{ __('Remove') }} </button>
                     </form>
                 </td>
             </tr>
         @endfor
         <form action="{{ route('cart') }}" method="POST">
+            @csrf
             <tr>
                 <td>
                     <input
                         class="inputType"
                         type="text"
                         name="nameField"
-                        placeholder="<?= translate('Name') ?>"
-                        value="<?= $inputData['nameField'] ?>"
+                        placeholder="{{ __('Name') }}"
+                        value="{{ old('nameField') }}"
                     >
+                    {{ old('nameField') }}
                     <span class="errorField">
-                            <?= isset($inputErrors['nameFieldError'])
-                            ? '* ' . translate($inputErrors['nameFieldError'])
-                            : '' ?>
+<!--                            --><?//= isset($inputErrors['nameFieldError'])
+//                            ? '* ' . __($inputErrors['nameFieldError'])
+//                            : '' ?>
                         </span>
                 </td>
             </tr>
@@ -53,13 +55,13 @@
                         class="inputType"
                         type="text"
                         name="addressField"
-                        placeholder="<?= translate('Contact deatails') ?>"
-                        value="<?= $inputData['addressField'] ?>"
+                        placeholder="{{ __('Contact deatails') }}"
+                        {{--value="<?= $inputData['addressField'] ?>"--}}
                     >
                     <span class="errorField">
-                                    <?= isset($inputErrors['addressFieldError'])
-                            ? '* ' . translate($inputErrors['addressFieldError'])
-                            : '' ?>
+<!--                                    --><?//= isset($inputErrors['addressFieldError'])
+//                            ? '* ' . __($inputErrors['addressFieldError'])
+//                            : '' ?>
                                 </span>
                 </td>
             </tr>
@@ -70,16 +72,17 @@
                                 class="inputType"
                                 type="text"
                                 name="commentsField"
-                                placeholder="<?= translate('Comments') ?>"
+                                {{--placeholder="{{ old('commentsField') }}"--}}
                             >
-                                <?= $inputData['commentsField'] ?>
+
                             </textarea>
+                    <!--                                --><?//= $inputData['commentsField'] ?>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <a href="{{ route('index') }}"><?= translate('Go to index') ?></a>
-                    <input type="submit" name="submitButton" value="Checkout">
+                    <a href="{{ route('index') }}">{{ __('Go to index') }}</a>
+                    <input type="submit" name="Checkout">
                 </td>
             </tr>
         </form>
