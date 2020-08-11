@@ -11,7 +11,7 @@
         @for ($i = 0; $i < count($productsList); $i++)
             <tr>
                 <td>
-                    <img src="{{ $productsList[$i]['image_path'] }}" alt="{{ __('The image could not be loaded') }}"><br>
+                    <img src="{{ $message->embed($productsList[$i]['image_path']) }}" alt="{{ __('The image could not be loaded') }}"><br>
                 </td>
                 <td>
                     {{ $productsList[$i]['title'] }}<br>

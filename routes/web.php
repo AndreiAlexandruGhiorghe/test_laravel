@@ -21,3 +21,7 @@ Route::match(['get', 'post'], '/index', 'IndexController@show')->name('index');
 
 Route::match(['get', 'post'], '/cart', 'CartController@show')->name('cart');
 Route::delete('/cart/{product}', 'CartController@destroy')->name('removeFromCart');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -1,16 +1,8 @@
-.phoneImage {
-    width: 100px;
-    height: 100px;
-}
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
 
-.linkButton {
-    background: none!important;
-    border: none;
-    padding: 0!important;
-    /*optional*/
-    font-family: arial, sans-serif;
-    /*input has OS specific font-family*/
-    color: #069;
-    text-decoration: underline;
-    cursor: pointer;
-}
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
