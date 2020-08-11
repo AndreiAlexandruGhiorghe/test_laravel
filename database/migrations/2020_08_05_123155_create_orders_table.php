@@ -15,10 +15,10 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->date('creation_date');
             $table->string('name', 255);
             $table->string('address', 255);
-            $table->string('comments', 255);
+            $table->string('comments', 255)->nullable();
+            $table->nullableTimestamps(0);
         });
     }
 

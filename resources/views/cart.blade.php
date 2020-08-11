@@ -17,9 +17,9 @@
                     {{ $productsList[$i]['title'] }}<br>
                     {{ $productsList[$i]['description'] }}<br>
                     {{ $productsList[$i]['price'] }} {{ __('euro') }}<br>
-                    {{ $productsList[$i]['inventory'] - ((isset($myCart[$productsList[$i]['id']]))
+                    {{ ((isset($myCart[$productsList[$i]['id']]))
                         ? $myCart[$productsList[$i]['id']]
-                        : 0) }} {{ __('left') }}<br>
+                        : 0) }} {{ __('in cart') }}<br>
                 </td>
                 <td>
                     <form method="post" action="{{ route('removeFromCart', ['product' => $productsList[$i]['id']]) }}">
@@ -41,12 +41,11 @@
                         placeholder="{{ __('Name') }}"
                         value="{{ old('nameField') }}"
                     >
-                    {{ old('nameField') }}
-                    <span class="errorField">
-<!--                            --><?//= isset($inputErrors['nameFieldError'])
-//                            ? '* ' . __($inputErrors['nameFieldError'])
-//                            : '' ?>
+                    @error('nameField')
+                        <span style="color: red;">
+                            {{ $errors->first('nameField') }}
                         </span>
+                    @enderror
                 </td>
             </tr>
             <tr>
@@ -56,13 +55,13 @@
                         type="text"
                         name="addressField"
                         placeholder="{{ __('Contact deatails') }}"
-                        {{--value="<?= $inputData['addressField'] ?>"--}}
+                        value="{{ old('addressField') }}"
                     >
-                    <span class="errorField">
-<!--                                    --><?//= isset($inputErrors['addressFieldError'])
-//                            ? '* ' . __($inputErrors['addressFieldError'])
-//                            : '' ?>
-                                </span>
+                    @error('addressField')
+                        <span style="color: red;">
+                                {{ $errors->first('addressField') }}
+                        </span>
+                    @enderror
                 </td>
             </tr>
             <tr>
@@ -72,11 +71,9 @@
                                 class="inputType"
                                 type="text"
                                 name="commentsField"
-                                {{--placeholder="{{ old('commentsField') }}"--}}
+                                placeholder="{{ old('commentsField') }}"
                             >
-
                             </textarea>
-                    <!--                                --><?//= $inputData['commentsField'] ?>
                 </td>
             </tr>
             <tr>

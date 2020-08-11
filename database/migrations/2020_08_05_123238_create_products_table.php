@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('price');
             $table->string('image_path', 255)->unique();
             $table->unsignedBigInteger('inventory');
+            $table->nullableTimestamps(0);
         });
     }
 
