@@ -19,8 +19,9 @@ Route::get('/', function () {
 
 Route::match(['get', 'post'], '/index', 'IndexController@show')->name('index');
 
-Route::match(['get', 'post'], '/cart', 'CartController@show')->name('cart');
-Route::delete('/cart/{product}', 'CartController@destroy')->name('removeFromCart');
+Route::get('/cart', 'CartController@index')->name('cart.index');
+Route::post('/cart', 'CartController@show')->name('cart.show');
+Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
 
 Auth::routes();
 

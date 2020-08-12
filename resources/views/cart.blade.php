@@ -22,7 +22,7 @@
                         : 0) }} {{ __('in cart') }}<br>
                 </td>
                 <td>
-                    <form method="post" action="{{ route('removeFromCart', ['product' => $productsList[$i]['id']]) }}">
+                    <form method="post" action="{{ route('cart.destroy', ['product' => $productsList[$i]['id']]) }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="linkButton"> {{ __('Remove') }} </button>
@@ -30,7 +30,7 @@
                 </td>
             </tr>
         @endfor
-        <form action="{{ route('cart') }}" method="POST">
+        <form action="{{ route('cart.show') }}" method="POST">
             @csrf
             <tr>
                 <td>

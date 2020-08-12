@@ -32,7 +32,7 @@
                 @endfor
                 <tr>
                     <td>
-                        <a href="{{ route('cart') }}"> {{ __('Go to cart') }} </a>
+                        <a href="{{ route('cart.index') }}"> {{ __('Go to cart') }} </a>
                     </td>
                 </tr>
         </tbody>
