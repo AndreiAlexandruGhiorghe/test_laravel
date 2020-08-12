@@ -8,28 +8,30 @@
 <body>
     <table>
         <tbody>
-                @for ($i = 0; $i < count($productsList); $i++)
+                @foreach ($productsList as $product)
                     <tr>
                         <td>
-                            <img src="{{ $productsList[$i]['image_path'] }}" alt="{{ __('The image could not be loaded') }}"><br>
+                            <img src="{{ $product['image_path'] }}" alt="{{ __('The image could not be loaded') }}"><br>
                         </td>
                         <td>
-                            {{ $productsList[$i]['title'] }}<br>
-                            {{ $productsList[$i]['description'] }}<br>
-                            {{ $productsList[$i]['price'] }} {{ __('euro') }}<br>
-                            {{ $productsList[$i]['inventory'] - ((isset($myCart[$productsList[$i]['id']]))
-                                ? $myCart[$productsList[$i]['id']]
+                            {{ $product['title'] }}<br>
+                            {{ $product['description'] }}<br>
+                            {{ $product['price'] }} {{ __('euro') }}<br>
+                            {{ $product['inventory'] - ((isset($myCart[$product['id']]))
+                                ? $myCart[$product['id']]
                                 : 0) }} {{ __('left') }}<br>
                         </td>
                         <td>
-                            <form method="post" action="{{ route('index') }}">
+                            <form method="post"
+                                  action="{{ route('index.update',[$product['id']]) }}"
+                            >
                                 @csrf
-                                <input type="hidden" name="idProduct" value="{{ $productsList[$i]['id'] }}">
+                                @method('PUT')
                                 <button type="submit" class="linkButton"> {{ __('Add') }} </button>
                             </form>
                         </td>
                     </tr>
-                @endfor
+                @endforeach
                 <tr>
                     <td>
                         <a href="{{ route('cart.index') }}"> {{ __('Go to cart') }} </a>

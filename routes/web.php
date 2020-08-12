@@ -17,7 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::match(['get', 'post'], '/index', 'IndexController@show')->name('index');
+Route::put('/index/{product}', 'IndexController@update')->name('index.update');
+Route::get('/index', 'IndexController@index')->name('index.index');
 
 Route::get('/cart', 'CartController@index')->name('cart.index');
 Route::post('/cart', 'CartController@show')->name('cart.show');

@@ -64,7 +64,7 @@ class CartController extends Controller
 
         $request->session()->forget('myCart');
 
-        return redirect(route('index'));
+        return redirect(route('index.index'));
     }
 
     public function destroy(Request $request, Product $product)

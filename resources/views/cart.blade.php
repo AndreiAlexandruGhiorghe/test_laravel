@@ -8,28 +8,26 @@
 <body>
 <table>
     <tbody>
-        @for ($i = 0; $i < count($productsList); $i++)
+        @foreach ($productsList as $product)
             <tr>
                 <td>
-                    <img src="{{ $productsList[$i]['image_path'] }}" alt="{{ __('The image could not be loaded') }}"><br>
+                    <img src="{{ $product['image_path'] }}" alt="{{ __('The image could not be loaded') }}"><br>
                 </td>
                 <td>
-                    {{ $productsList[$i]['title'] }}<br>
-                    {{ $productsList[$i]['description'] }}<br>
-                    {{ $productsList[$i]['price'] }} {{ __('euro') }}<br>
-                    {{ ((isset($myCart[$productsList[$i]['id']]))
-                        ? $myCart[$productsList[$i]['id']]
-                        : 0) }} {{ __('in cart') }}<br>
+                    {{ $product['title'] }}<br>
+                    {{ $product['description'] }}<br>
+                    {{ $product['price'] }} {{ __('euro') }}<br>
+                    {{ ((isset($myCart[$product['id']])) ? $myCart[$product['id']] : 0) }} {{ __('in cart') }}<br>
                 </td>
                 <td>
-                    <form method="post" action="{{ route('cart.destroy', ['product' => $productsList[$i]['id']]) }}">
+                    <form method="post" action="{{ route('cart.destroy', ['product' => $product['id']]) }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="linkButton"> {{ __('Remove') }} </button>
                     </form>
                 </td>
             </tr>
-        @endfor
+        @endforeach
         <form action="{{ route('cart.show') }}" method="POST">
             @csrf
             <tr>
@@ -78,7 +76,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{{ route('index') }}">{{ __('Go to index') }}</a>
+                    <a href="{{ route('index.index') }}">{{ __('Go to index') }}</a>
                     <input type="submit" name="Checkout">
                 </td>
             </tr>
