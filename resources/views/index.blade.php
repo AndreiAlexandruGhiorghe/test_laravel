@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <title>Index Page</title>
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-</head>
-<body>
+@extends ('layouts.html')
+
+@section ('bodyContent')
     <table>
         <tbody>
                 @foreach ($productsList as $product)
                     <tr>
                         <td>
-                            <img src="{{ $product['image_path'] }}" alt="{{ __('The image could not be loaded') }}"><br>
+                            <img
+                                src="{{ '/storage/images/' . $product['image_path'] }}"
+                                alt="{{ __('The image could not be loaded') }}"
+                            ><br>
                         </td>
                         <td>
                             {{ $product['title'] }}<br>
@@ -39,5 +37,4 @@
                 </tr>
         </tbody>
     </table>
-</body>
-</html>
+@endsection

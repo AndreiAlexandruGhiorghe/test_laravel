@@ -26,10 +26,16 @@ Route::delete('/product/{product}', 'ProductController@destroy')->name('product.
 Route::put('/product/{product}', 'ProductController@update')->name('product.update');
 Route::post('/product', 'ProductController@store')->name('product.store');
 
+
+Route::get('/login', 'LoginController@show')->name('login.show');
+Route::post('/login', 'LoginController@store')->name('login.store');
+Route::delete('/login/signout', 'LoginController@destroy')->name('login.destroy');
+
+
+
 Route::get('/cart', 'CartController@index')->name('cart.index');
 Route::post('/cart', 'CartController@show')->name('cart.show');
 Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
 
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

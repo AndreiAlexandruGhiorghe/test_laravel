@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Date;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('login');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -40,8 +47,26 @@ class ProductController extends Controller
             'titleField' => 'required',
             'descriptionField' => 'required',
             'priceField' => 'required',
-            'inventoryField' => 'required'
+            'inventoryField' => 'required',
+            'fileField' => 'required',
         ]);
+        $timestamp = now()->timestamp;
+        $fileName = $timestamp . $request->file('fileField')->getClientOriginalName();
+
+        $request->file('fileField')->storeAs(
+            '/public/images',
+            $fileName
+        );
+
+        $product = new Product;
+        $product->title = $request->get('titleField');
+        $product->description = $request->get('descriptionField');
+        $product->price = $request->get('priceField');
+        $product->inventory = $request->get('inventoryField');
+        $product->image_path = $fileName;
+        $product->save();
+
+        return redirect()->route('product.index');
     }
 
     /**
@@ -63,7 +88,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        return view('product.edit', ['id' => $id]);
+        $product = Product::find($id);
+        return view('product.edit', ['id' => $id, 'product' => $product]);
     }
 
     /**
@@ -75,7 +101,36 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'titleField' => 'required',
+            'descriptionField' => 'required',
+            'priceField' => 'required',
+            'inventoryField' => 'required',
+        ]);
+
+        $product = Product::find($id);
+        // checking if the image is different
+        if (
+            $request->hasFile('fileField')
+            && $product->image_path != $request->file('fileField')->getClientOriginalName()
+        ) {
+            $timestamp = now()->timestamp;
+            $fileName = $timestamp . $request->file('fileField')->getClientOriginalName();
+
+            $request->file('fileField')->storeAs(
+                '/public/images',
+                $fileName
+            );
+
+            $product->image_path = $fileName;
+        }
+        $product->title = $request->get('titleField');
+        $product->description = $request->get('descriptionField');
+        $product->price = $request->get('priceField');
+        $product->inventory = $request->get('inventoryField');
+        $product->save();
+
+        return redirect()->route('product.index');
     }
 
     /**
@@ -86,6 +141,17 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $product = Product::find($id);
+        if ($product) {
+            if (file_exists('/public/storage/images/' . $product->image_path)) {
+                if (!unlink('/public/storage/images/' . $product->image_path)) {
+                    return redirect()->route('product.index');
+                }
+            }
+            $product->delete();
+        }
+
+        return redirect()->route('product.index');
     }
 }

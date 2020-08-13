@@ -19,11 +19,7 @@
     <table id="contentTable">
         <tbody>
         <form
-            action="@if ($id == 0)
-                {{ route('product.store') }}
-            @else
-                {{ route('product.update', [$id]) }}
-            @endif"
+            action="{{ ($id == 0) ? route('product.store') : route('product.update', [$id]) }}"
             method="POST"
             enctype="multipart/form-data">
             @csrf
@@ -36,7 +32,9 @@
                         type="text"
                         name="titleField"
                         placeholder="{{ __('Title') }}"
-                        value="{{ old('titleField') }}"
+                        value="{{ (old('titleField') != null)
+                            ? old('titleField')
+                            : ((!isset($product->title)) ? '': $product->title ) }}"
                     >
                     @error('titleField')
                         <span style="color: red;">
@@ -51,7 +49,9 @@
                         type="text"
                         name="descriptionField"
                         placeholder="{{ __('Description') }}"
-                        value="{{ old('descriptionField') }}"
+                        value="{{ (old('descriptionField') != null)
+                            ? old('descriptionField')
+                            : ((!isset($product->description)) ? '' : $product->description ) }}"
                     >
                     @error('descriptionField')
                         <span style="color: red;">
@@ -66,7 +66,9 @@
                         type="text"
                         name="priceField"
                         placeholder="{{ __('Price') }}"
-                        value="{{ old('priceField') }}"
+                        value="{{ (old('priceField') != null)
+                            ? old('priceField')
+                            : ((!isset($product->price)) ? '' : $product->price ) }}"
                     >
                     @error('priceField')
                         <span style="color: red;">
@@ -81,7 +83,9 @@
                         type="text"
                         name="inventoryField"
                         placeholder="{{ __('Number of products') }}"
-                        value="{{ old('inventoryField') }}"
+                        value="{{ (old('inventoryField') != null)
+                            ? old('inventoryField')
+                            : ((!isset($product->inventory)) ? '' : $product->inventory ) }}"
                     >
                     @error('inventoryField')
                         <span style="color: red;">
@@ -90,21 +94,23 @@
                     @enderror
                 </td>
             </tr>
-            {{--<tr>--}}
-                {{--<td>--}}
-                    {{--<label for="inputFileId" id="labelId" name="labelId">--}}
-                        {{--<?= ($inputData['imageNameField'])--}}
-                            {{--? $inputData['imageNameField']--}}
-                            {{--: translate('Choose an Image: Click Here!'); ?>--}}
-                    {{--</label>--}}
-                    {{--<input onchange="changeLabel()" type="file" id="inputFileId" style="display:none" name="fileField">--}}
-                    {{--<span class="errorField">--}}
-                                {{--<?= isset($inputError['imageFileFieldError'])--}}
-                            {{--? translate($inputError['imageFileFieldError'])--}}
-                            {{--: '' ?>--}}
-                            {{--</span>--}}
-                {{--</td>--}}
-            {{--</tr>--}}
+            <tr>
+                <td>
+                    <label for="inputFileId" id="labelId" name="labelId">
+                        {{ (old('imageNameField') != null)
+                            ? old('imageNameField')
+                            : ((!isset($product->image_path))
+                                ? __('Choose an Image: Click Here!')
+                                : $product->image_path ) }}
+                    </label>
+                    <input onchange="changeLabel()" type="file" id="inputFileId" style="display:none" name="fileField">
+                    @error('imageNameField')
+                        <span style="color: red;">
+                            {{ $errors->find('imageNameField') }}
+                        </span>
+                    @enderror
+                </td>
+            </tr>
             <tr>
                 <td>
                     <a href="{{ route('product.index') }}">
