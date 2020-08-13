@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Product;
+use App\Models\Product;
+use Illuminate\Support\Arr;
 
 class IndexController extends Controller
 {
@@ -26,7 +27,7 @@ class IndexController extends Controller
         // retrieving data from cart or an empty array in case of myCart's absence
         $myCart = $request->session()->get('myCart', []);
 
-        $myCart[$product->id] = isset($myCart[$product->id]) ? $myCart[$product->id] + 1 : 1;
+        $myCart[$product->id] = Arr::get($myCart, strval($product->id), 0) + 1;
 
         // add myCart to session
         $request->session()->put('myCart', $myCart);

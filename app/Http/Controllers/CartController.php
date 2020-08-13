@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\CartMail;
-use App\Order;
-use App\OrderProduct;
+use App\Models\Order;
+use App\Models\OrderProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Product;
+use App\Models\Product;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;

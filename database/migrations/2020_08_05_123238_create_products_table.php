@@ -17,9 +17,9 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('title', 255)->unique();
             $table->string('description', 255);
-            $table->unsignedBigInteger('price');
+            $table->unsignedDecimal('price');
             $table->string('image_path', 255)->unique();
-            $table->unsignedBigInteger('inventory');
+            $table->unsignedInteger('inventory');
             $table->nullableTimestamps(0);
         });
     }
