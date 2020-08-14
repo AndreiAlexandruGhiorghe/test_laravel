@@ -30,9 +30,6 @@
                     </td>
                 </tr>
                 <br>
-                <p>
-
-                </p>
             @endforeach
             <tr>
                 <td>
