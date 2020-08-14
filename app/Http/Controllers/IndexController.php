@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Product;
 use Illuminate\Support\Arr;
 
 class IndexController extends Controller

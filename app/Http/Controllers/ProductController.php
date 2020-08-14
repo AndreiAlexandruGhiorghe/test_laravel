@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Date;
@@ -49,6 +49,7 @@ class ProductController extends Controller
             'priceField' => 'required',
             'inventoryField' => 'required',
             'fileField' => 'required',
+            'imageNameField' => 'required',
         ]);
         $timestamp = now()->timestamp;
         $fileName = $timestamp . $request->file('fileField')->getClientOriginalName();
@@ -57,7 +58,7 @@ class ProductController extends Controller
             '/public/images',
             $fileName
         );
-
+        dd(1);
         $product = new Product;
         $product->title = $request->get('titleField');
         $product->description = $request->get('descriptionField');
@@ -65,7 +66,7 @@ class ProductController extends Controller
         $product->inventory = $request->get('inventoryField');
         $product->image_path = $fileName;
         $product->save();
-
+        dd(1);
         return redirect()->route('product.index');
     }
 
