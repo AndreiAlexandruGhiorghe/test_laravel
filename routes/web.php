@@ -17,24 +17,33 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// index urls
 Route::put('/index/{product}', 'IndexController@update')->name('index.update');
-Route::get('/index', 'IndexController@index')->name('index.index');
+Route::get('/index', 'IndexController@index')->name('index.index')->middleware('auth');
 
-Route::get('/product', 'ProductController@index')->name('product.index');
-Route::get('/product/{product}/edit', 'ProductController@edit')->name('product.edit');
-Route::delete('/product/{product}', 'ProductController@destroy')->name('product.destroy');
-Route::put('/product/{product}', 'ProductController@update')->name('product.update');
-Route::post('/product', 'ProductController@store')->name('product.store');
 
-Route::get('/login', 'LoginController@show')->name('login.show');
-Route::post('/login', 'LoginController@store')->name('login.store');
-Route::delete('/login/signout', 'LoginController@destroy')->name('login.destroy');
 
+Route::middleware(['auth'])->group(function () {
+    // product urls
+    Route::get('/product', 'ProductController@index')->name('product.index');
+    Route::get('/product/{product}/edit', 'ProductController@edit')->name('product.edit');
+    Route::get('/product/add', 'ProductController@add')->name('product.add');
+    Route::delete('/product/{product}', 'ProductController@destroy')->name('product.destroy');
+    Route::put('/product/{product}', 'ProductController@update')->name('product.update');
+    Route::post('/product', 'ProductController@store')->name('product.store');
+
+    //order urls
+    Route::get('/order', 'OrderController@index')->name('order.index');
+    Route::get('/order/{order}', 'OrderController@show')->name('order.show');
+});
+
+// cart urls
 Route::get('/cart', 'CartController@index')->name('cart.index');
-Route::post('/cart', 'CartController@show')->name('cart.show');
+Route::post('/cart', 'CartController@store')->name('cart.store');
 Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
 
-Route::get('/order', 'OrderController@index')->name('order.index');
-Route::get('/order/{order}', 'OrderController@show')->name('order.show');
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
