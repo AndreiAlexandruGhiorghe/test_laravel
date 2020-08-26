@@ -2,16 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Date;
 
 class ProductController extends Controller
 {
-    public function __construct()
+    private function storeOrUpdate(Request $request, $id = null)
     {
-        $this->middleware('login');
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'inventory' => 'required',
+        ]);
+
+        if (!$id) {
+            $request->validate(['file' => 'required']);
+            $product = new Product;
+        } else {
+            $product = Product::find($id);
+        }
+
+        if ($request->file('file')) {
+            $fileName = now()->timestamp . $request->file('file')->getClientOriginalName();
+            $request->file('file')->storeAs('/public/images', $fileName);
+        } else {
+            $fileName = $product->image_path;
+        }
+
+        $product->fill($request->only(['title', 'description', 'price', 'inventory']));
+        $product->fill(['image_path' => $fileName]);
+
+        $product->save();
     }
 
     /**
@@ -21,18 +45,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-
         return view('product.index', ['products' => Product::all()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -43,42 +56,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'titleField' => 'required',
-            'descriptionField' => 'required',
-            'priceField' => 'required',
-            'inventoryField' => 'required',
-            'fileField' => 'required',
-            'imageNameField' => 'required',
-        ]);
-        $timestamp = now()->timestamp;
-        $fileName = $timestamp . $request->file('fileField')->getClientOriginalName();
+        $this->storeOrUpdate($request);
 
-        $request->file('fileField')->storeAs(
-            '/public/images',
-            $fileName
-        );
-        dd(1);
-        $product = new Product;
-        $product->title = $request->get('titleField');
-        $product->description = $request->get('descriptionField');
-        $product->price = $request->get('priceField');
-        $product->inventory = $request->get('inventoryField');
-        $product->image_path = $fileName;
-        $product->save();
-        dd(1);
         return redirect()->route('product.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function add()
     {
-        //
+        return view('product.edit');
     }
 
     /**
@@ -90,6 +75,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::find($id);
+
         return view('product.edit', ['id' => $id, 'product' => $product]);
     }
 
@@ -102,34 +88,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'titleField' => 'required',
-            'descriptionField' => 'required',
-            'priceField' => 'required',
-            'inventoryField' => 'required',
-        ]);
-
-        $product = Product::find($id);
-        // checking if the image is different
-        if (
-            $request->hasFile('fileField')
-            && $product->image_path != $request->file('fileField')->getClientOriginalName()
-        ) {
-            $timestamp = now()->timestamp;
-            $fileName = $timestamp . $request->file('fileField')->getClientOriginalName();
-
-            $request->file('fileField')->storeAs(
-                '/public/images',
-                $fileName
-            );
-
-            $product->image_path = $fileName;
-        }
-        $product->title = $request->get('titleField');
-        $product->description = $request->get('descriptionField');
-        $product->price = $request->get('priceField');
-        $product->inventory = $request->get('inventoryField');
-        $product->save();
+        $this->storeOrUpdate($request, $id);
 
         return redirect()->route('product.index');
     }
@@ -142,7 +101,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-
         $product = Product::find($id);
         if ($product) {
             if (file_exists('/public/storage/images/' . $product->image_path)) {

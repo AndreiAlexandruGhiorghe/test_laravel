@@ -1,4 +1,5 @@
 @extends('layouts.html')
+
 @section('bodyContent')
     @foreach ($priceOfOrder as $orderId => $totalPrice)
         <table>

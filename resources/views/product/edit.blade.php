@@ -18,112 +18,123 @@
 <body onload="LoadValue();">
     <table id="contentTable">
         <tbody>
-        <form
-            action="{{ ($id == 0) ? route('product.store') : route('product.update', [$id]) }}"
-            method="POST"
-            enctype="multipart/form-data">
-            @csrf
-            @if ($id > 0)
-                @method('PUT')
-            @endif
-            <tr>
-                <td>
-                    <input
-                        type="text"
-                        name="titleField"
-                        placeholder="{{ __('Title') }}"
-                        value="{{ (old('titleField') != null)
-                            ? old('titleField')
-                            : ((!isset($product->title)) ? '': $product->title ) }}"
-                    >
-                    @error('titleField')
-                        <span style="color: red;">
-                            {{ $errors->first('titleField') }}
-                        </span>
-                    @enderror
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input
-                        type="text"
-                        name="descriptionField"
-                        placeholder="{{ __('Description') }}"
-                        value="{{ (old('descriptionField') != null)
-                            ? old('descriptionField')
-                            : ((!isset($product->description)) ? '' : $product->description ) }}"
-                    >
-                    @error('descriptionField')
-                        <span style="color: red;">
-                            {{ $errors->first('descriptionField') }}
-                        </span>
-                    @enderror
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input
-                        type="text"
-                        name="priceField"
-                        placeholder="{{ __('Price') }}"
-                        value="{{ (old('priceField') != null)
-                            ? old('priceField')
-                            : ((!isset($product->price)) ? '' : $product->price ) }}"
-                    >
-                    @error('priceField')
-                        <span style="color: red;">
-                            {{ $errors->first('priceField') }}
-                        </span>
-                    @enderror
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input
-                        type="text"
-                        name="inventoryField"
-                        placeholder="{{ __('Number of products') }}"
-                        value="{{ (old('inventoryField') != null)
-                            ? old('inventoryField')
-                            : ((!isset($product->inventory)) ? '' : $product->inventory ) }}"
-                    >
-                    @error('inventoryField')
-                        <span style="color: red;">
-                            {{ $errors->first('inventoryField') }}
-                        </span>
-                    @enderror
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="inputFileId" id="labelId" name="labelId">
-                        {{ (old('imageNameField') != null)
-                            ? old('imageNameField')
-                            : ((!isset($product->image_path))
-                                ? __('Choose an Image: Click Here!')
-                                : $product->image_path ) }}
-                    </label>
-                    <input onchange="changeLabel()" type="file" id="inputFileId" style="display:none" name="fileField">
-                    @error('imageNameField')
-                        <span style="color: red;">
-                            {{ $errors->find('imageNameField') }}
-                        </span>
-                    @enderror
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="{{ route('product.index') }}">
-                        {{ __('Products')}}
-                    </a>
-                </td>
-                <td>
-                    <button type="submit" name="submitButton">
-                        {{ __('Save') }}
-                    </button>
-                </td>
-            </tr>
-        </form>
+            {{--if I dont have an id it means that I am on the add page--}}
+            <form
+                action="{{ (!isset($id)) ? route('product.store') : route('product.update', [$id]) }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+                @csrf
+                {{--if there is some id it means that I am on the edit page--}}
+                @if (isset($id))
+                    @method('PUT')
+                @endif
+                <tr>
+                    <td>
+                        <input
+                            type="text"
+                            name="title"
+                            placeholder="{{ __('Title') }}"
+                            value="{{ (old('title') != null)
+                                ? old('title')
+                                : ((!isset($product->title)) ? '': $product->title ) }}"
+                        >
+                        @error('title')
+                            <span class="error">
+                                {{ $errors->first('title') }}
+                            </span>
+                        @enderror
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input
+                            type="text"
+                            name="description"
+                            placeholder="{{ __('Description') }}"
+                            value="{{ (old('description') != null)
+                                ? old('description')
+                                : ((!isset($product->description)) ? '' : $product->description ) }}"
+                        >
+                        @error('description')
+                            <span class="error">
+                                {{ $errors->first('description') }}
+                            </span>
+                        @enderror
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input
+                            type="text"
+                            name="price"
+                            placeholder="{{ __('Price') }}"
+                            value="{{ (old('price') != null)
+                                ? old('price')
+                                : ((!isset($product->price)) ? '' : $product->price ) }}"
+                        >
+                        @error('price')
+                            <span class="error">
+                                {{ $errors->first('price') }}
+                            </span>
+                        @enderror
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input
+                            type="text"
+                            name="inventory"
+                            placeholder="{{ __('Number of products') }}"
+                            value="{{ (old('inventory') != null)
+                                ? old('inventory')
+                                : ((!isset($product->inventory)) ? '' : $product->inventory ) }}"
+                        >
+                        @error('inventory')
+                            <span class="error">
+                                {{ $errors->first('inventory') }}
+                            </span>
+                        @enderror
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="inputFileId" id="labelId" name="imageName">
+                            {{ (old('imageName') != null)
+                                ? old('imageName')
+                                : ((!isset($product->image_path))
+                                    ? __('Choose an Image: Click Here!')
+                                    : $product->image_path ) }}
+                        </label>
+                        <input onchange="changeLabel()" type="file" id="inputFileId" style="display:none" name="file">
+                        @if (isset($id))
+                            @error('file')
+                                <span class="error">
+                                    {{ $errors->first('file') }}
+                                </span>
+                            @enderror
+                        @else
+                            @error('imageName')
+                                <span class="error">
+                                    {{ $errors->first('imageName') }}
+                                </span>
+                            @enderror
+                        @endif
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="{{ route('product.index') }}">
+                            {{ __('Products')}}
+                        </a>
+                    </td>
+                    <td>
+                        <button type="submit" name="submitButton">
+                            {{ __('Save') }}
+                        </button>
+                    </td>
+                </tr>
+            </form>
         </tbody>
     </table>
 </body>

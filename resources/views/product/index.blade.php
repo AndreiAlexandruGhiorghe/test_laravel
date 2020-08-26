@@ -6,7 +6,7 @@
             @foreach ($products as $product)
                 <tr>
                     <td>
-                        <img class="phoneImage" src="{{ '/storage/images/' . $product['image_path'] }}">
+                        <img class="phoneImage" src="{{ asset('/storage/images/' . $product['image_path']) }}">
                     </td>
                     <td>
                         {{ $product['title'] }}<br>
@@ -33,18 +33,16 @@
             @endforeach
             <tr>
                 <td>
-                    <a href="{{ route('product.edit', [0]) }}" class="linkButton">
+                    <a href="{{ route('product.add') }}" class="linkButton">
                         {{ __('Add') }}
                     </a>
                 </td>
                 <td>
-                    <form action="{{ route('login.destroy') }}" method="post">
+                    <form action="{{ route('logout') }}" method="post">
                         @csrf
-                        @method('DELETE')
                         <button type="submit" class="linkButton">
                             {{ __('Logout') }}
                         </button>
-
                     </form>
                 </td>
             </tr>

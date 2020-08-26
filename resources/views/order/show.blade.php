@@ -7,7 +7,7 @@
                 <tr>
                     <td>
                         <img
-                            src="{{ '/storage/images/' . $product['image_path'] }}"
+                            src="{{ asset('/storage/images/' . $product['image_path']) }}"
                             alt="{{ __('The image could not be loaded') }}"
                         ><br>
                     </td>
@@ -36,11 +36,6 @@
             <tr>
                 <td>
                     {{ __('Comments: ') . $order->comments }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-
                 </td>
             </tr>
         </tbody>

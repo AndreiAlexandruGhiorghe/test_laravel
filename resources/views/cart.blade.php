@@ -7,14 +7,14 @@
                 <tr>
                     <td>
                         <img
-                            src="{{ '/storage/images/' . $product['image_path'] }}"
+                            src="{{ asset('/storage/images/' . $product['image_path']) }}"
                             alt="{{ __('The image could not be loaded') }}"
                         ><br>
                     </td>
                     <td>
                         {{ $product['title'] }}<br>
                         {{ $product['description'] }}<br>
-                        {{ $product['price'] }} {{ __('euro') }}<br>
+                        {{ $product['price'] *  $myCart[$product['id']]}} {{ __('euro') }}<br>
                         {{ ((isset($myCart[$product['id']])) ? $myCart[$product['id']] : 0) }} {{ __('in cart') }}<br>
                     </td>
                     <td>
@@ -26,7 +26,7 @@
                     </td>
                 </tr>
             @endforeach
-            <form action="{{ route('cart.show') }}" method="POST">
+            <form action="{{ route('cart.store') }}" method="POST">
                 @csrf
                 <tr>
                     <td>
@@ -38,7 +38,7 @@
                             value="{{ old('nameField') }}"
                         >
                         @error('nameField')
-                            <span style="color: red;">
+                            <span class="error">
                                 {{ $errors->first('nameField') }}
                             </span>
                         @enderror
@@ -54,7 +54,7 @@
                             value="{{ old('addressField') }}"
                         >
                         @error('addressField')
-                            <span style="color: red;">
+                            <span class="error">
                                     {{ $errors->first('addressField') }}
                             </span>
                         @enderror
@@ -62,20 +62,20 @@
                 </tr>
                 <tr>
                     <td>
-                                <textarea
-                                    id="commentsSection"
-                                    class="inputType"
-                                    type="text"
-                                    name="commentsField"
-                                    placeholder="{{ old('commentsField') }}"
-                                >
-                                </textarea>
+                        <textarea
+                            id="commentsSection"
+                            class="inputType"
+                            type="text"
+                            name="commentsField"
+                            placeholder="{{ old('commentsField') }}"
+                        >
+                        </textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <a href="{{ route('index.index') }}">{{ __('Go to index') }}</a>
-                        <input type="submit" name="Checkout">
+                        <input type="submit" name="Checkout" value="Checkout">
                     </td>
                 </tr>
             </form>

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\CartMail;
-use App\Order;
-use App\OrderProduct;
+use App\Models\Order;
+use App\Models\OrderProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Product;
+use App\Models\Product;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +25,7 @@ class CartController extends Controller
         return view('cart', ['productsList' => $productsList, 'myCart' => $myCart]);
     }
 
-    public function show(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'nameField' => 'required|min:5|max:255',
@@ -50,10 +50,10 @@ class CartController extends Controller
 
         $productsList = Product::select('*')->whereIn('id', array_keys($myCart))->get();
 
-        Mail::to(request('addressField'))->send(new CartMail($productsList, $myCart, [
-            'nameField' => request('nameField'),
-            'addressField' => request('addressField'),
-            'commentsField' => request('commentsField'),
+        Mail::to($request->input('addressField'))->send(new CartMail($productsList, $myCart, [
+            'nameField' => $request->input('nameField'),
+            'addressField' => $request->input('addressField'),
+            'commentsField' => $request->input('commentsField'),
         ]));
 
         $products = Product::whereIn('id', array_keys($myCart))->get();
