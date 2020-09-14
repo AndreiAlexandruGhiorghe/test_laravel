@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Product;
+use App\Models\Product;
 use Illuminate\Support\Arr;
 
 class IndexController extends Controller
@@ -19,6 +19,16 @@ class IndexController extends Controller
             $productsList = Product::all();
         }
 
+        // handle the ajax request
+        if ($request->expectsJson()) {
+            $json = $productsList->toJson();
+            $arr = [];
+            $arr['products'] = json_decode($json,true);
+            $arr['myCart'] = $myCart;
+            $json = json_encode($arr, true);
+            return $json;
+        }
+
         return view('index', ['productsList' => $productsList, 'myCart' => $myCart]);
     }
 
@@ -31,6 +41,22 @@ class IndexController extends Controller
 
         // add myCart to session
         $request->session()->put('myCart', $myCart);
+
+        // handle the ajax request
+        if ($request->expectsJson()) {
+            if (isset($myCart) && is_array($myCart) && count($myCart)) {
+                $productsList = Product::productsOutsideCart($myCart)->get();
+            } else {
+                $productsList = Product::all();
+            }
+
+            $json = $productsList->toJson();
+            $arr = [];
+            $arr['products'] = json_decode($json,true);
+            $arr['myCart'] = $myCart;
+            $json = json_encode($arr, true);
+            return $json;
+        }
 
         return redirect()->route('index.index');
     }

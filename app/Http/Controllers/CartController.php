@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\CartMail;
-use App\Order;
-use App\OrderProduct;
+use App\Models\Order;
+use App\Models\OrderProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Product;
+use App\Models\Product;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +21,15 @@ class CartController extends Controller
 
         // get the data from the table
         $productsList = Product::select('*')->whereIn('id', array_keys($myCart))->get();
+
+        if ($request->expectsJson()) {
+            $json = $productsList->toJson();
+            $arr = [];
+            $arr['products'] = json_decode($json,true);
+            $arr['myCart'] = $myCart;
+            $json = json_encode($arr, true);
+            return $json;
+        }
 
         return view('cart', ['productsList' => $productsList, 'myCart' => $myCart]);
     }
@@ -64,6 +73,12 @@ class CartController extends Controller
 
         $request->session()->forget('myCart');
 
+        if ($request->expectsJson()) {
+            return json_encode([
+                'status' => 'success'
+            ], true);
+        }
+
         return redirect(route('index.index'));
     }
 
@@ -73,6 +88,21 @@ class CartController extends Controller
         $myCart = $request->session()->pull('myCart');
         Arr::forget($myCart, $product->id);
         $request->session()->put('myCart', $myCart);
+
+        if ($request->expectsJson()) {
+            if (isset($myCart) && is_array($myCart) && count($myCart)) {
+                $productsList = Product::whereIn('id', array_keys($myCart))->get();
+            } else {
+                $productsList = Product::all();
+            }
+
+            $json = $productsList->toJson();
+            $arr = [];
+            $arr['products'] = json_decode($json,true);
+            $arr['myCart'] = $myCart;
+            $json = json_encode($arr, true);
+            return $json;
+        }
 
         return redirect(route('cart.index'));
     }

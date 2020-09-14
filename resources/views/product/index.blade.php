@@ -33,7 +33,7 @@
             @endforeach
             <tr>
                 <td>
-                    <a href="{{ route('product.edit', [0]) }}" class="linkButton">
+                    <a href="{{ route('product.add', [0]) }}" class="linkButton">
                         {{ __('Add') }}
                     </a>
                 </td>

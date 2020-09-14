@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Date;
@@ -14,14 +14,49 @@ class ProductController extends Controller
         $this->middleware('login');
     }
 
+    private function storeOrUpdate(Request $request, $id = null)
+    {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'inventory' => 'required',
+        ]);
+
+        if (!$id) {
+            $request->validate(['file' => 'required']);
+            $product = new \App\Models\Product;
+        } else {
+            $product = Product::find($id);
+        }
+
+        if ($request->file('file')) {
+            $fileName = now()->timestamp . $request->file('file')->getClientOriginalName();
+            $request->file('file')->storeAs('/public/images', $fileName);
+        } else {
+            $fileName = $product->image_path;
+        }
+
+        $product->fill($request->only(['title', 'description', 'price', 'inventory']));
+        $product->fill(['image_path' => $fileName]);
+
+        $product->save();
+    }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-
+//        $arr['products'] = Product::all();
+//        $json = json_encode($arr, true);
+//        return $json;
+        if (request()->expectsJson()) {
+            $arr['products'] = Product::all();
+            $json = json_encode($arr, true);
+            return $json;
+        }
         return view('product.index', ['products' => Product::all()]);
     }
 
@@ -39,34 +74,12 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'titleField' => 'required',
-            'descriptionField' => 'required',
-            'priceField' => 'required',
-            'inventoryField' => 'required',
-            'fileField' => 'required',
-            'imageNameField' => 'required',
-        ]);
-        $timestamp = now()->timestamp;
-        $fileName = $timestamp . $request->file('fileField')->getClientOriginalName();
+        $this->storeOrUpdate($request);
 
-        $request->file('fileField')->storeAs(
-            '/public/images',
-            $fileName
-        );
-        dd(1);
-        $product = new Product;
-        $product->title = $request->get('titleField');
-        $product->description = $request->get('descriptionField');
-        $product->price = $request->get('priceField');
-        $product->inventory = $request->get('inventoryField');
-        $product->image_path = $fileName;
-        $product->save();
-        dd(1);
         return redirect()->route('product.index');
     }
 
@@ -102,34 +115,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'titleField' => 'required',
-            'descriptionField' => 'required',
-            'priceField' => 'required',
-            'inventoryField' => 'required',
-        ]);
-
-        $product = Product::find($id);
-        // checking if the image is different
-        if (
-            $request->hasFile('fileField')
-            && $product->image_path != $request->file('fileField')->getClientOriginalName()
-        ) {
-            $timestamp = now()->timestamp;
-            $fileName = $timestamp . $request->file('fileField')->getClientOriginalName();
-
-            $request->file('fileField')->storeAs(
-                '/public/images',
-                $fileName
-            );
-
-            $product->image_path = $fileName;
-        }
-        $product->title = $request->get('titleField');
-        $product->description = $request->get('descriptionField');
-        $product->price = $request->get('priceField');
-        $product->inventory = $request->get('inventoryField');
-        $product->save();
+        $this->storeOrUpdate($request, $id);
 
         return redirect()->route('product.index');
     }
@@ -154,5 +140,10 @@ class ProductController extends Controller
         }
 
         return redirect()->route('product.index');
+    }
+
+    public function add()
+    {
+        return view('product.edit');
     }
 }

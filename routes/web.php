@@ -25,6 +25,7 @@ Route::get('/product/{product}/edit', 'ProductController@edit')->name('product.e
 Route::delete('/product/{product}', 'ProductController@destroy')->name('product.destroy');
 Route::put('/product/{product}', 'ProductController@update')->name('product.update');
 Route::post('/product', 'ProductController@store')->name('product.store');
+Route::get('/product/add', 'ProductController@add')->name('product.add');
 
 Route::get('/login', 'LoginController@show')->name('login.show');
 Route::post('/login', 'LoginController@store')->name('login.store');
@@ -38,3 +39,6 @@ Route::get('/order', 'OrderController@index')->name('order.index');
 Route::get('/order/{order}', 'OrderController@show')->name('order.show');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('/spa', 'SpaController@index')->name('spa.index');

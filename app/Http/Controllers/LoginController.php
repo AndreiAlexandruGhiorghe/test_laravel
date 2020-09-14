@@ -23,7 +23,20 @@ class LoginController extends Controller
             && $admin['password'] == $request->get('passwordField')
         ) {
             $request->session()->put('idUser', $request->get('usernameField'));
+            if ($request->expectsJson()) {
+                return json_encode([
+                    'message' => 'successfully logged in',
+                    'redirect' => '#product'
+                ]);
+            }
             return redirect()->route('product.index');
+        }
+
+        if ($request->expectsJson()) {
+            return json_encode([
+                'message' => 'wrong username or password',
+                'redirect' => '#login'
+            ]);
         }
         return redirect()->route('login.show');
     }
