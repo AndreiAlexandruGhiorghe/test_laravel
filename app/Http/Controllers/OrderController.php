@@ -35,8 +35,8 @@ class OrderController extends Controller
      */
     public function show($order)
     {
-        $order = Order::find($order);
+        $orderDetails = Order::find($order);
 
-        return view('order.show', ['order' =>$order]);
+        return view('order.show', ['order' =>$orderDetails]);
     }
 }

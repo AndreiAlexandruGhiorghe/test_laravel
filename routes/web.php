@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 // index urls
 Route::put('/index/{product}', 'IndexController@update')->name('index.update');
-Route::get('/index', 'IndexController@index')->name('index.index')->middleware('auth');
+Route::get('/index', 'IndexController@index')->name('index.index');
 
 
 
