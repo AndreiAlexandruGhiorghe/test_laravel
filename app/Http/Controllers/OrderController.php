@@ -33,10 +33,9 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($order)
+    public function show($id)
     {
-        $orderDetails = Order::find($order);
-
-        return view('order.show', ['order' =>$orderDetails]);
+        $order = Order::find($id);
+        return view('order.show', ['order' =>$order]);
     }
 }

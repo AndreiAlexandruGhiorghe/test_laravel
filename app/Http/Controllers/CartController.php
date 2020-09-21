@@ -67,11 +67,11 @@ class CartController extends Controller
         return redirect(route('index.index'));
     }
 
-    public function destroy(Request $request, Product $product)
+    public function destroy(Request $request, $id)
     {
         // romoving the product from cart
         $myCart = $request->session()->pull('myCart');
-        Arr::forget($myCart, $product->id);
+        Arr::forget($myCart, $id);
         $request->session()->put('myCart', $myCart);
 
         return redirect(route('cart.index'));
