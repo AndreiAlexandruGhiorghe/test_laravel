@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = ['title', 'description', 'price', 'image_path', 'inventory'];
+
     public function scopeProductsOutsideCart($query, $myCart)
     {
         // building the query for the products from cart that
