@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Date;
 
 class ProductController extends Controller
 {
-    private function storeOrUpdate(Request $request, $id = null)
+    private function storeOrUpdate(Request $request, $product = null)
     {
         $request->validate([
             'title' => 'required',
@@ -18,23 +18,23 @@ class ProductController extends Controller
             'inventory' => 'required',
         ]);
 
-        if (!$id) {
+        if (!$product) {
             $request->validate(['file' => 'required']);
-            $product = new Product;
+            $newProduct = new Product;
         } else {
-            $product = Product::find($id);
+            $newProduct = Product::find($product);
         }
 
         if ($request->file('file')) {
             $fileName = now()->timestamp . $request->file('file')->getClientOriginalName();
             $request->file('file')->storeAs('/public/images', $fileName);
         } else {
-            $fileName = $product->image_path;
+            $fileName = $newProduct->image_path;
         }
 
-        $product->fill($request->only(['title', 'description', 'price', 'inventory']) + ['image_path' => $fileName]);
+        $newProduct->fill($request->only(['title', 'description', 'price', 'inventory']) + ['image_path' => $fileName]);
 
-        $product->save();
+        $newProduct->save();
     }
 
     /**
@@ -71,11 +71,11 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($product)
     {
-        $product = Product::find($id);
+        $productDetails = Product::find($product);
 
-        return view('product.edit', ['id' => $id, 'product' => $product]);
+        return view('product.edit', ['id' => $product, 'product' => $productDetails]);
     }
 
     /**
@@ -85,9 +85,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $product)
     {
-        $this->storeOrUpdate($request, $id);
+        $this->storeOrUpdate($request, $product);
 
         return redirect()->route('product.index');
     }
@@ -98,16 +98,16 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($product)
     {
-        $product = Product::find($id);
-        if ($product) {
-            if (file_exists('/public/storage/images/' . $product->image_path)) {
-                if (!unlink('/public/storage/images/' . $product->image_path)) {
+        $productDetails = Product::find($product);
+        if ($productDetails) {
+            if (file_exists('/public/storage/images/' . $productDetails->image_path)) {
+                if (!unlink('/public/storage/images/' . $productDetails->image_path)) {
                     return redirect()->route('product.index');
                 }
             }
-            $product->delete();
+            $productDetails->delete();
         }
 
         return redirect()->route('product.index');
