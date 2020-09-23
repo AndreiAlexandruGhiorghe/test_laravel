@@ -7,6 +7,7 @@
                     <tr>
                         <td>
                             <img
+                                class="phoneImage"
                                 src="{{ asset('/storage/images/' . $product['image_path']) }}"
                                 alt="{{ __('The image could not be loaded') }}"
                             ><br>

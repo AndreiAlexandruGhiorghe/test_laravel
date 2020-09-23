@@ -21,12 +21,10 @@ class IndexController extends Controller
 
         // handle the ajax request
         if ($request->expectsJson()) {
-            $json = $productsList->toJson();
-            $arr = [];
-            $arr['products'] = json_decode($json,true);
-            $arr['myCart'] = $myCart;
-            $json = json_encode($arr, true);
-            return $json;
+            return response()->json([
+                'products' => $productsList,
+                'myCart' => $myCart
+            ]);
         }
 
         return view('index', ['productsList' => $productsList, 'myCart' => $myCart]);
@@ -50,12 +48,10 @@ class IndexController extends Controller
                 $productsList = Product::all();
             }
 
-            $json = $productsList->toJson();
-            $arr = [];
-            $arr['products'] = json_decode($json,true);
-            $arr['myCart'] = $myCart;
-            $json = json_encode($arr, true);
-            return $json;
+            return response()->json([
+                'products' => $productsList,
+                'myCart' => $myCart
+            ]);
         }
 
         return redirect()->route('index.index');

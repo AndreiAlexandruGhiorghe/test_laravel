@@ -23,18 +23,16 @@ class CartController extends Controller
         $productsList = Product::select('*')->whereIn('id', array_keys($myCart))->get();
 
         if ($request->expectsJson()) {
-            $json = $productsList->toJson();
-            $arr = [];
-            $arr['products'] = json_decode($json,true);
-            $arr['myCart'] = $myCart;
-            $json = json_encode($arr, true);
-            return $json;
+            return response()->json([
+                'products' => $productsList,
+                'myCart' => $myCart
+                ]);
         }
 
         return view('cart', ['productsList' => $productsList, 'myCart' => $myCart]);
     }
 
-    public function show(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'nameField' => 'required|min:5|max:255',
@@ -74,9 +72,9 @@ class CartController extends Controller
         $request->session()->forget('myCart');
 
         if ($request->expectsJson()) {
-            return json_encode([
+            return response()->json([
                 'status' => 'success'
-            ], true);
+            ]);
         }
 
         return redirect(route('index.index'));
@@ -96,12 +94,10 @@ class CartController extends Controller
                 $productsList = Product::all();
             }
 
-            $json = $productsList->toJson();
-            $arr = [];
-            $arr['products'] = json_decode($json,true);
-            $arr['myCart'] = $myCart;
-            $json = json_encode($arr, true);
-            return $json;
+            return response()->json([
+                'products' => $productsList,
+                'myCart' => $myCart
+            ]);
         }
 
         return redirect(route('cart.index'));

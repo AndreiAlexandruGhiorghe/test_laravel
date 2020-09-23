@@ -32,13 +32,12 @@ Route::post('/login', 'LoginController@store')->name('login.store');
 Route::delete('/login/signout', 'LoginController@destroy')->name('login.destroy');
 
 Route::get('/cart', 'CartController@index')->name('cart.index');
-Route::post('/cart', 'CartController@show')->name('cart.show');
+Route::post('/cart', 'CartController@store')->name('cart.store');
 Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
 
 Route::get('/order', 'OrderController@index')->name('order.index');
 Route::get('/order/{order}', 'OrderController@show')->name('order.show');
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 
 Route::get('/spa', 'SpaController@index')->name('spa.index');
