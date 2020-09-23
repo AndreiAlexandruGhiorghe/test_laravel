@@ -32,7 +32,10 @@ class ProductController extends Controller
             $fileName = $product->image_path;
         }
 
-        $product->fill($request->only(['title', 'description', 'price', 'inventory']) + ['image_path' => $fileName]);
+        $product->fill(array_merge(
+            $request->only(['title', 'description', 'price', 'inventory']),
+            ['image_path' => $fileName])
+        );
 
         $product->save();
     }
