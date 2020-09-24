@@ -8,6 +8,9 @@ class LoginController extends Controller
 {
     public function show(Request $request)
     {
+        if ($request->expectsJson()) {
+            return response()->json(['redirect' => '#login']);
+        }
         return view('login');
     }
 
@@ -26,7 +29,7 @@ class LoginController extends Controller
             if ($request->expectsJson()) {
                 return json_encode([
                     'message' => 'successfully logged in',
-                    'redirect' => '#product'
+                    'redirect' => '#products'
                 ]);
             }
             return redirect()->route('product.index');

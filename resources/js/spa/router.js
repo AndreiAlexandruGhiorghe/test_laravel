@@ -53,9 +53,6 @@ $(document).ready(function () {
             case '#products':
                 router.products()
                 break;
-            case '#product':
-                router.product()
-                break;
             case '#orders':
                 router.orders()
                 break;
@@ -63,7 +60,11 @@ $(document).ready(function () {
                 router.order()
                 break;
             default:
-                router.index()
+                if (window.location.hash.match('[#product\/[0-9]+\/edit]|[#product]')) {
+                    router.product()
+                } else {
+                    router.index()
+                }
                 break;
         }
     }

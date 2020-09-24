@@ -39,7 +39,7 @@
         {{--        Add new product--}}
         <button name="addProductToDB" onclick="new Products().addProduct()">Add</button>
 
-        <button name="logoutButton" onclick="">Logout</button>
+        <button name="logoutButton" onclick="router._products.logout()">Logout</button>
     </div>
 
     <div class="page productForm">
