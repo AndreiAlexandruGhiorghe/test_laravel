@@ -82,7 +82,7 @@ class ProductController extends Controller
     public function edit(Request $request, $id)
     {
         $product = Product::find($id);
-        if ($request->expectsJson()) {
+        if ($request->expectsJSON()) {
             return response()->json(['product' => $product]);
         }
 

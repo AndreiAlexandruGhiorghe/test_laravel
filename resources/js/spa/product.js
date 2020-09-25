@@ -23,31 +23,26 @@ function Product () {
                     }
                 },
                 error: function (message) {
-                    console.log(message)
                     $('.productForm table span').remove();
                     if (message.responseJSON.errors !== undefined) {
                         if (message.responseJSON.errors.title !== undefined) {
-                            $('.productForm  [name="title"]').after('<span class="errorSpan">'
-                                + message.responseJSON.errors.title[0]
-                                + '</span>');
+                            $('.productForm  [name="title"]')
+                                .after(`<span class="errorSpan">${message.responseJSON.errors.title[0]}</span>`);
                         }
 
                         if (message.responseJSON.errors.description !== undefined) {
-                            $('.productForm  [name="description"]').after('<span class="errorSpan">'
-                                + message.responseJSON.errors.description
-                                + '</span>');
+                            $('.productForm  [name="description"]')
+                                .after(`<span class="errorSpan">${message.responseJSON.errors.description}</span>`);
                         }
 
                         if (message.responseJSON.errors.price !== undefined) {
-                            $('.productForm  [name="price"]').after('<span class="errorSpan">'
-                                + message.responseJSON.errors.price
-                                + '</span>');
+                            $('.productForm  [name="price"]')
+                                .after(`<span class="errorSpan">${message.responseJSON.errors.price}</span>`);
                         }
 
                         if (message.responseJSON.errors.inventory !== undefined) {
-                            $('.productForm  [name="inventory"]').after('<span class="errorSpan">'
-                                + message.responseJSON.errors.inventory
-                                + '</span>');
+                            $('.productForm  [name="inventory"]')
+                                .after(`<span class="errorSpan">${message.responseJSON.errors.inventory}</span>`);
                         }
                     }
                 }
@@ -76,27 +71,23 @@ function Product () {
                     $('.productForm table span').remove();
                     if (message.responseJSON.errors !== undefined) {
                         if (message.responseJSON.errors.title !== undefined) {
-                            $('.productForm  [name="title"]').after('<span class="errorSpan">'
-                                + message.responseJSON.errors.title[0]
-                                + '</span>');
+                            $('.productForm  [name="title"]')
+                                .after(`<span class="errorSpan">${message.responseJSON.errors.title[0]}</span>`);
                         }
 
                         if (message.responseJSON.errors.description !== undefined) {
-                            $('.productForm  [name="description"]').after('<span class="errorSpan">'
-                                + message.responseJSON.errors.description
-                                + '</span>');
+                            $('.productForm  [name="description"]')
+                                .after(`<span class="errorSpan">${message.responseJSON.errors.description}</span>`);
                         }
 
                         if (message.responseJSON.errors.price !== undefined) {
-                            $('.productForm  [name="price"]').after('<span class="errorSpan">'
-                                + message.responseJSON.errors.price
-                                + '</span>');
+                            $('.productForm  [name="price"]')
+                                .after(`<span class="errorSpan">${message.responseJSON.errors.price}</span>`);
                         }
 
                         if (message.responseJSON.errors.inventory !== undefined) {
-                            $('.productForm  [name="inventory"]').after('<span class="errorSpan">'
-                                + message.responseJSON.errors.inventory
-                                + '</span>');
+                            $('.productForm  [name="inventory"]')
+                                .after(`<span class="errorSpan">${message.responseJSON.errors.inventory}</span>`);
                         }
                     }
                 }
@@ -106,57 +97,55 @@ function Product () {
     }
     this.renderProductForm = function (params = {}) {
         var addPage = (!this.id)
-        var html = '';
+        var html = ``;
         html = [
-            '<form>',
-            '<table><tbody>',
-            '<tr><td>',
-            '<input ',
-            'type="text" ',
-            'name="title" ',
-            'placeholder="' + translate('Title') + '" ',
-            '> ',
-            '</td></tr>',
-            '<tr><td>',
-            '<input ',
-            'type="text" ',
-            'name="description" ',
-            'placeholder="' + translate('Description') + '" ',
-            '> ',
-            '</td></tr>',
-            '<tr><td>',
-            '<input ',
-            'type="text" ',
-            'name="price" ',
-            'placeholder="' + translate('Price') + '" ',
-            '> ',
-            '</td></tr>',
-            '<tr><td>',
-            '<input ',
-            'type="text" ',
-            'name="inventory" ',
-            'placeholder="' + translate('Number of products') + '" ',
-            '> ',
-            '</td></tr>',
-            '<tr><td>',
-            '<label for="inputFileId" id="labelId" name="imageName"> ',
-            '' + translate('Choose an Image: Click Here!') + '',
-            '</label>',
-            '<input onchange="changeLabel()" type="file" id="inputFileId" style="display:none" name="file"> ',
-            '</td></tr>',
-            '<tr><td>',
-            '<a href="#products">',
-                '' + translate('Products') + '',
-            '</a>',
-            '</td><td>',
-            '<button type="submit"> ',
-                '' + translate('Save') + '',
-            '</button>',
-            '</td></tr>',
-            '</tr></td>',
-            '</tbody></table>',
-            '</form>'
-        ].join('')
+            `<form>`,
+            `<table><tbody>`,
+            `<tr><td>`,
+            `<input `,
+            `type="text" `,
+            `name="title" `,
+            `placeholder="${translate('Title')}" `,
+            `> `,
+            `</td></tr>`,
+            `<tr><td>`,
+            `<input `,
+            `type="text" `,
+            `name="description" `,
+            `placeholder="${translate('Description')}" `,
+            `> `,
+            `</td></tr>`,
+            `<tr><td>`,
+            `<input `,
+            `type="text" `,
+            `name="price" `,
+            `placeholder="${translate('Price')}" `,
+            `> `,
+            `</td></tr>`,
+            `<tr><td>`,
+            `<input `,
+            `type="text" `,
+            `name="inventory" `,
+            `placeholder="${translate('Number of products')}" `,
+            `> `,
+            `</td></tr>`,
+            `<tr><td>`,
+            `<label for="inputFileId" id="labelId" name="imageName"> `,
+            `${translate('Choose an Image: Click Here!')}`,
+            `</label>`,
+            `<input onchange="changeLabel()" type="file" id="inputFileId" style="display:none" name="file"> `,
+            `</td></tr>`,
+            `<tr><td>`,
+            `<a href="#products">`,
+            `${translate('Products')}`,
+            `</a>`,
+            `</td><td>`,
+            `<input type="submit" value="${translate('Save')}"> `,
+            `</td></tr>`,
+            `</tr></td>`,
+            `</tbody></table>`,
+            `</form>`
+        ].join(``)
 
         return html;
     }
@@ -182,7 +171,7 @@ function Product () {
                 }
             })
         }
-        $('.productForm form').on('submit', (e) => {
+        $('.productForm form input[type="submit"]').on('click', (e) => {
             e.preventDefault()
             this.submitForm()
         })

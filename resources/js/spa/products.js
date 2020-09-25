@@ -26,27 +26,27 @@ function Products () {
         })
     }
     this.renderProductList = function (params) {
-        var html='';
+        var html=``;
 
         $.each(params, function (key, product) {
             html += [
-                '<tr>',
-                '<td>',
-                '<img src="/storage/images/' + product.image_path + '" class="phoneImage">',
-                '</td>',
-                '<td>',
-                product.title + '<br>',
-                product.description + '<br>',
-                product.price + translate('euro') + '<br>',
-                product.inventory + translate('left') + '<br>',
-                '<td>',
-                '<a href="#product/'+ product.id +'/edit">' + translate('Edit') +'</a>',
-                '</td>',
-                '<td>',
-                '<button onclick="router._products.delete('+ product.id +')">' + translate('Delete') + '</button>',
-                '</td>',
-                '</tr>'
-            ].join('');
+                `<tr>`,
+                `<td>`,
+                `<img src="/storage/images/${product.image_path}" class="phoneImage">`,
+                `</td>`,
+                `<td>`,
+                `${product.title}<br>`,
+                `${product.description}<br>`,
+                `${product.price} ${translate('euro')}<br>`,
+                `${product.inventory} ${translate('left')}<br>`,
+                `<td>`,
+                `<a href="#product/${product.id}/edit">${translate('Edit')}</a>`,
+                `</td>`,
+                `<td>`,
+                `<button onclick="router._products.delete(${product.id})">${translate('Delete')}</button>`,
+                `</td>`,
+                `</tr>`
+            ].join(``);
         });
 
         return html;

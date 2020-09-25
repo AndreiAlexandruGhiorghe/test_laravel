@@ -13,28 +13,28 @@ function Index() {
         });
     }
     this.renderIndexList = function(params) {
-        var html='';
+        var html=``;
         $.each(params['products'], function (key, product) {
             if (product.inventory - (params['myCart'].hasOwnProperty(product.id)
                 ? params['myCart'][product.id]
                 : 0) > 0) {
                 html += [
-                    '<tr>',
-                    '<td>',
-                    '<img src="/storage/images/' + product.image_path + '" class="phoneImage">',
-                    '</td>',
-                    '<td>',
-                    product.title + '<br>',
-                    product.description + '<br>',
-                    product.price + 'euro<br>',
-                    product.inventory - (params['myCart'].hasOwnProperty(product.id)
+                    `<tr>`,
+                    `<td>`,
+                    `<img src="/storage/images/${product.image_path}" class="phoneImage">`,
+                    `</td>`,
+                    `<td>`,
+                    `${product.title}<br>`,
+                    `${product.description}<br>`,
+                    `${product.price} euro<br>`,
+                    `${product.inventory - (params['myCart'].hasOwnProperty(product.id)
                         ? params['myCart'][product.id]
-                        : 0) + 'left<br>',
-                    '<td>',
-                    '<button onclick="router._index.addFunction('+ product.id +')">Add</button>',
-                    '</td>',
-                    '</tr>'
-                ].join('');
+                        : 0)} left<br>`,
+                    `<td>`,
+                    `<button onclick="router._index.addFunction(${product.id})">Add</button>`,
+                    `</td>`,
+                    `</tr>`
+                ].join(``);
             }
         });
 
