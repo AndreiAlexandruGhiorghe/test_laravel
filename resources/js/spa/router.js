@@ -26,14 +26,11 @@ function Router() {
     this._order = new Order()
     this.order = function() {
         this._order.init()
-        // this._order.show()
     }
 }
 
 var router = new Router()
-function test () {
-    console.log(router)
-}
+
 $(document).ready(function () {
     /**
      * URL hash change handler

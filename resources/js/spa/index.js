@@ -30,8 +30,8 @@ function Index() {
                     product.inventory - (params['myCart'].hasOwnProperty(product.id)
                         ? params['myCart'][product.id]
                         : 0) + 'left<br>',
-                    '<td>' +
-                    '<button onclick="router._index.addFunction('+ product.id +')">Add</button>'+
+                    '<td>',
+                    '<button onclick="router._index.addFunction('+ product.id +')">Add</button>',
                     '</td>',
                     '</tr>'
                 ].join('');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Date;
@@ -49,25 +50,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-//        $arr['products'] = Product::all();
-//        $json = json_encode($arr, true);
-//        return $json;
         if (request()->expectsJson()) {
-            $arr['products'] = Product::all();
-            $json = json_encode($arr, true);
-            return $json;
+            return response()->json(Product::all());
         }
         return view('product.index', ['products' => Product::all()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -80,18 +66,11 @@ class ProductController extends Controller
     {
         $this->storeOrUpdate($request);
 
-        return redirect()->route('product.index');
-    }
+        if ($request->expectsJson()) {
+            return response()->json(['status' => 'success']);
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()->route('product.index');
     }
 
     /**
@@ -100,9 +79,13 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $product = Product::find($id);
+        if ($request->expectsJson()) {
+            return response()->json(['product' => $product]);
+        }
+
         return view('product.edit', ['id' => $id, 'product' => $product]);
     }
 
@@ -117,6 +100,10 @@ class ProductController extends Controller
     {
         $this->storeOrUpdate($request, $id);
 
+        if ($request->expectsJson()) {
+            return response()->json(['status' => 'success']);
+        }
+
         return redirect()->route('product.index');
     }
 
@@ -126,7 +113,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
 
         $product = Product::find($id);
@@ -139,11 +126,19 @@ class ProductController extends Controller
             $product->delete();
         }
 
+        if ($request->expectsJson()) {
+            return response()->json(['status' => 'success']);
+        }
+
         return redirect()->route('product.index');
     }
 
-    public function add()
+    public function add(Request $request)
     {
+        if ($request->expectsJson()) {
+            return response()->json(['redirect' => '#product'], 302);
+        }
+
         return view('product.edit');
     }
 }

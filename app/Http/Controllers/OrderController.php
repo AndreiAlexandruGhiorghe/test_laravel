@@ -44,10 +44,10 @@ class OrderController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $order = Order::find($id);
+        $order = Order::with('products')->find($id);
 
         if ($request->expectsJson()) {
-            response()->json($order);
+            return response()->json(['order' => $order]);
         }
 
         return view('order.show', ['order' =>$order]);

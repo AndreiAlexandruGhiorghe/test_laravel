@@ -16,7 +16,7 @@ function Login() {
             success: function (response) {
                 $('.login .list span').remove();
                 if (response.redirect == '#login') {
-                    $('.login .list [name="loginButton"]').after('<span style="color: red">'
+                    $('.login .list [name="loginButton"]').after('<span class="errorSpan">'
                         + response.message
                         + '</span>');
                 } else {
@@ -26,12 +26,12 @@ function Login() {
             error: function (request) {
                 $('.login .list span').remove();
                 if (request.responseJSON.errors.usernameField !== undefined) {
-                    $('.login .list [name="usernameField"]').after('<span style="color: red">'
+                    $('.login .list [name="usernameField"]').after('<span class="errorSpan">'
                         + request.responseJSON.errors.usernameField
                         + '</span>');
                 }
                 if (request.responseJSON.errors.passwordField !== undefined) {
-                    $('.login .list [name="passwordField"]').after('<span style="color: red">'
+                    $('.login .list [name="passwordField"]').after('<span class="errorSpan">'
                         + request.responseJSON.errors.passwordField
                         + '</span>');
                 }
@@ -39,23 +39,25 @@ function Login() {
         });
     }
     this.renderLogin = function () {
-        html= '<tr>\n' +
-            '                <td>\n' +
-            '                    <input type="text" name="usernameField" placeholder="username">\n' +
-            '                </td>\n' +
-            '            </tr>\n' +
-            '            <tr>\n' +
-            '                <td>\n' +
-            '                    <input type="password" name="passwordField" placeholder="password">\n' +
-            '                </td>\n' +
-            '            </tr>\n' +
-            '            <tr>\n' +
-            '                <td>\n' +
-            '                    <button ' +
-            'name="loginButton" ' +
-            'onclick="new Login().loginFunction()">'+ translate('Login')+'</button>\n' +
-        '                </td>\n' +
-        '            </tr>'
+        html = [
+            '<tr>',
+            '<td>',
+            '<input type="text" name="usernameField" placeholder="username">',
+            '</td>',
+            '</tr>',
+            '<tr>',
+            '<td>',
+            '<input type="password" name="passwordField" placeholder="password">',
+            '</td>',
+            '</tr>',
+            '<tr>',
+            '<td>',
+            '<button ',
+            'name="loginButton" ',
+            'onclick="new Login().loginFunction()">'+ translate('Login') + '</button>',
+            '</td>',
+            '</tr>'
+        ].join('')
         return html
     }
     this.init = function () {

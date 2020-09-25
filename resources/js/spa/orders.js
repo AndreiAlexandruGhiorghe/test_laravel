@@ -7,25 +7,23 @@ function Orders () {
                 order,
                 '</td></tr>',
                 '<tr><td>',
-                '<button onclick="router.order(' + nrOrder +')">' + translate('see Order') + '</button>',
+                '<a href="#order/' + nrOrder +'">' + translate('see Order') + '</a>',
                 '</td></tr>'
             ].join('')
         })
 
         return html
     }
-
     this.init = function () {
-        // If all else fails, always default to index
         $('.page.orders').show();
-        // Load the index products from the server
+        // Load the orders from the server
         $.ajax('/order', {
             dataType: 'json',
             success: (response) => {
                 if (response.redirect === '#login') {
                     window.location.hash = '#login'
                 } else {
-                    // Render the products in the index list
+                    // Render the products in the order's list
                     $('.page.orders .list tbody').html(this.renderOrdersList(response));
                 }
             }

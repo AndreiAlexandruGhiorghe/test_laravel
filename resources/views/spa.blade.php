@@ -220,22 +220,42 @@
             console.log(html)
             return html;
         }
-        function renderProductForm(params = []) {
-            var addPage = (params === [])
+        function renderProductForm(params = {}) {
+            var addPage = (!params.hasOwnProperty('id'))
             var html = '';
             html = [
-                '<table><tbody>' +
-                '<form ' +
-                (addPage) ?  + '{{ route('product.add') }}': 'http://127.0.0.1:8000/product/' + params.id + '/edit'  +
-                '>' +
-                '' +
-                '</form>' +
+                '<table><tbody>',
+                '<tr><td>',
+                '<form action="',
+                (addPage) ? '{{ route('product.add') }}': 'http://127.0.0.1:8000/product/' + params.id + '/edit" ' ,
+                'method="POST" ',
+                'enctype="multipart/form-data"',
+                '>',
+                '@csrf',
+                (addPage) ? '': '@method('PUT')',
+                '',
+                '</form>',
+                '</tr></td>',
                 '</tbody></table>'
             ].join('')
+            return html;
         }
         function addProductPage() {
             $('.page.product .product').hide()
             $('.page.product .productForm').show().html(renderProductForm())
+        }
+        function renderOrderList(response) {
+            console.log(response)
+            var html = 'test'
+            $.each(response, function(id, orderPrice) {
+                html += [
+                    '<table><tbody><tr><td>',
+                    orderPrice,
+                    '<br><a href="http://127.0.0.1:8000/spa#order/' + id + '">{{ __('See order') }}</a><br>',
+                    '</td></tr></tbody></table>'
+                ].join('')
+            })
+            return html;
         }
 
         $(document).ready(function () {
@@ -297,6 +317,36 @@
                     //             $('.product .list').html(renderProductList(response));
                     //         }
                     //     });
+                    case '#orders':
+                        // Show the cart page
+                        $('.page.order').show();
+                        // Load the cart products from the server
+                        $.ajax('/order', {
+                            dataType: 'json',
+                            success: function (response) {
+                                // Render the products in the cart list
+                                $('.page.order .ordersList').html(renderOrderList(response));
+                            },
+                            error: function (error) {
+                                console.log(error)
+                            }
+                        });
+                        break;
+                    case '#order/id':
+                        // Show the cart page
+                        $('.page.order').show();
+                        // Load the cart products from the server
+                        $.ajax('/order', {
+                            dataType: 'json',
+                            success: function (response) {
+                                // Render the products in the cart list
+                                $('.page.order .ordersList').html(renderOrderList(response));
+                            },
+                            error: function (error) {
+                                console.log(error)
+                            }
+                        });
+                        break;
                     default:
                         // If all else fails, always default to index
                         // Show the index page
@@ -353,7 +403,7 @@
             <a href="#" class="button">Go to index</a>
         </div>
         <div class="productForm">
-            Product Form
+            Products Form
         </div>
     </div>
 

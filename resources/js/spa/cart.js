@@ -17,7 +17,7 @@ function Cart() {
             html += [
                 '<tr>',
                 '<td>',
-                '<img src="/storage/images/' + product.image_path + '" class="phoneImage">',
+                '<img src="/storage/images/${product.image_path}" class="phoneImage">',
                 '</td>',
                 '<td>',
                 product.title + '<br>',
@@ -26,8 +26,8 @@ function Cart() {
                 (params['myCart'].hasOwnProperty(product.id)
                     ? params['myCart'][product.id]
                     : 0) + ' '+ translate('in cart') + '<br>',
-                '<td>' +
-                '<button onclick="router._cart.removeFunction('+ product.id +')">' + translate('Remove') +'</button>'+
+                '<td>',
+                '<button onclick="router._cart.removeFunction('+ product.id +')">' + translate('Remove') +'</button>',
                 '</td>',
                 '</tr>'
             ].join('');
@@ -68,12 +68,12 @@ function Cart() {
             error: function (request) {
                 $('.cart .list span').remove();
                 if (request.responseJSON.errors.nameField !== undefined) {
-                    $('.cart .list [name="nameField"]').after('<span style="color: red">'
+                    $('.cart .list [name="nameField"]').after('<span class="errorSpan">'
                         + request.responseJSON.errors.nameField
                         + '</span>');
                 }
                 if (request.responseJSON.errors.addressField) {
-                    $('.cart .list [name="addressField"]').after('<span style="color: red">'
+                    $('.cart .list [name="addressField"]').after('<span class="errorSpan">'
                         + request.responseJSON.errors.nameField
                         + '</span>');
                 }

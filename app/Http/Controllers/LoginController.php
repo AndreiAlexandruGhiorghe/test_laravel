@@ -27,7 +27,7 @@ class LoginController extends Controller
         ) {
             $request->session()->put('idUser', $request->get('usernameField'));
             if ($request->expectsJson()) {
-                return json_encode([
+                return response()->json([
                     'message' => 'successfully logged in',
                     'redirect' => '#products'
                 ]);
@@ -36,7 +36,7 @@ class LoginController extends Controller
         }
 
         if ($request->expectsJson()) {
-            return json_encode([
+            return response()->json([
                 'message' => 'wrong username or password',
                 'redirect' => '#login'
             ]);
@@ -47,6 +47,13 @@ class LoginController extends Controller
     public function destroy(Request $request)
     {
         $request->session()->remove('idUser');
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'success'
+            ]);
+        }
+
         return redirect()->route('product.index');
     }
 }
