@@ -94,10 +94,7 @@ class CartController extends Controller
                 $productsList = Product::all();
             }
 
-            return response()->json([
-                'products' => $productsList,
-                'myCart' => $myCart
-            ]);
+            return response()->json(['status' => 'success']);
         }
 
         return redirect(route('cart.index'));

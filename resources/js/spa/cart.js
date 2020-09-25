@@ -7,9 +7,7 @@ function Cart() {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
             success: (response) => {
-                $('.cart .list').empty()
-                // Render the products in the cart list
-                $('.cart .list').html(this.renderCartList(response));
+                window.onhashchange()
             }
         });
     }
@@ -29,7 +27,7 @@ function Cart() {
                     ? params['myCart'][product.id]
                     : 0) + ' '+ translate('in cart') + '<br>',
                 '<td>' +
-                '<button onclick="new Cart().removeFunction('+ product.id +')">' + translate('Remove') +'</button>'+
+                '<button onclick="router._cart.removeFunction('+ product.id +')">' + translate('Remove') +'</button>'+
                 '</td>',
                 '</tr>'
             ].join('');
@@ -94,7 +92,7 @@ function Cart() {
 
                 // add the checkout button
                 $('.cart [name="submitOrder"]')
-                    .attr('onclick', 'new Cart().submitOrder()')
+                    .attr('onclick', 'router._cart.submitOrder()')
                     .text(translate('Checkout'));
             }
         });

@@ -7,6 +7,7 @@
                 <tr>
                     <td>
                         <img
+                            class="phoneImage"
                             src="{{ '/storage/images/' . $product['image_path'] }}"
                             alt="{{ __('The image could not be loaded') }}"
                         ><br>
@@ -26,7 +27,7 @@
                     </td>
                 </tr>
             @endforeach
-            <form action="{{ route('cart.show') }}" method="POST">
+            <form action="{{ route('cart.store') }}" method="POST">
                 @csrf
                 <tr>
                     <td>
