@@ -24,9 +24,9 @@ function Router() {
         this._orders.init()
     }
     this._order = new Order()
-    this.order = function(idOrder) {
-        this._order.init(idOrder)
-        this._order.show()
+    this.order = function() {
+        this._order.init()
+        // this._order.show()
     }
 }
 
@@ -56,12 +56,11 @@ $(document).ready(function () {
             case '#orders':
                 router.orders()
                 break;
-            case '#order':
-                router.order()
-                break;
             default:
-                if (window.location.hash.match('[#product\/[0-9]+\/edit]|[#product]')) {
+                if (window.location.hash.match('(#product\/[1-9]+[0-9]*\/edit)|(#product)')) {
                     router.product()
+                } else if (window.location.hash.match('(#order\/[1-9]+[0-9]*)')) {
+                    router.order()
                 } else {
                     router.index()
                 }

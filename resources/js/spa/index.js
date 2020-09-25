@@ -6,9 +6,9 @@ function Index() {
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
-            success: function (response) {
+            success: (response) => {
                 // Render the products in the cart list
-                $('.index .list').html(new Index().renderIndexList(response));
+                $('.index .list').html(this.renderIndexList(response));
             }
         });
     }
@@ -31,7 +31,7 @@ function Index() {
                         ? params['myCart'][product.id]
                         : 0) + 'left<br>',
                     '<td>' +
-                    '<button onclick="new Index().addFunction('+ product.id +')">Add</button>'+
+                    '<button onclick="router._index.addFunction('+ product.id +')">Add</button>'+
                     '</td>',
                     '</tr>'
                 ].join('');
@@ -41,7 +41,6 @@ function Index() {
         return html;
     }
     this.init = function () {
-        // If all else fails, always default to index
         // Show the index page
         $('.index').show();
         // Load the index products from the server

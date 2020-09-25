@@ -17,7 +17,7 @@
         <table class="list"><tbody></tbody></table>
 
         <!-- A link to go to the cart by changing the hash -->
-        <a href="#cart" class="button">Go to cart</a>
+        <a href="#cart" class="button">{{ __('Go to cart') }}</a>
     </div>
 
     <!-- The cart page -->
@@ -26,9 +26,9 @@
         <table class="list"></table>
 
         <!-- A link to go to the index by changing the hash -->
-        <a href="#" class="button">Go to index</a>
+        <a href="#" class="button">{{ __('Go to index') }}</a>
 
-        <button name="submitOrder">Checkout</button>
+        <button name="submitOrder">{{ __('Checkout') }}</button>
     </div>
 
     {{--    The prduct page--}}
@@ -37,13 +37,12 @@
         <table class="list"></table>
 
         {{--        Add new product--}}
-        <button name="addProductToDB" onclick="new Products().addProduct()">Add</button>
+        <a href="#product/">{{ __('Add') }}</a>
 
-        <button name="logoutButton" onclick="router._products.logout()">Logout</button>
+        <button name="logoutButton" onclick="router._products.logout()">{{ __('Logout') }}</button>
     </div>
 
     <div class="page productForm">
-        Products Form
     </div>
 
     {{--    The login page--}}
@@ -63,7 +62,11 @@
 
     {{--        Show one order--}}
     <div class="page order">
+        <table class="list">
+            <tbody>
 
+            </tbody>
+        </table>
     </div>
 
 @endsection
