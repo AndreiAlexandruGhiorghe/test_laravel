@@ -155,6 +155,10 @@ function Product () {
         if (window.location.hash === '#product/') {
             // add page
             $('.page.productForm').html(this.renderProductForm())
+            $('.productForm form input[type="submit"]').on('click', (e) => {
+                e.preventDefault()
+                this.submitForm()
+            })
         } else {
             // edit page
             this.id = window.location.hash.split('/')[1]
@@ -169,11 +173,12 @@ function Product () {
                     $('.page.productForm form input[name="inventory"]').val(response.product.inventory)
                     $('.page.productForm form label').html(response.product.image_path)
                 }
+            }).then(() => {
+                $('.productForm form input[type="submit"]').on('click', (e) => {
+                    e.preventDefault()
+                    this.submitForm()
+                })
             })
         }
-        $('.productForm form input[type="submit"]').on('click', (e) => {
-            e.preventDefault()
-            this.submitForm()
-        })
     }
 }
