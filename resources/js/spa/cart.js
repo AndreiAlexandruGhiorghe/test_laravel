@@ -46,9 +46,9 @@ function Cart() {
         return html;
     }
     this.submitOrder = function () {
-        let name = $('.cart [name="nameField"]')[0].value;
-        let address = $('.cart [name="addressField"]')[0].value;
-        let comments = $('.cart [name="commentsField"]')[0].value;
+        const name = $('.cart [name="nameField"]')[0].value;
+        const address = $('.cart [name="addressField"]')[0].value;
+        const comments = $('.cart [name="commentsField"]')[0].value;
         $.ajax(route('cart.store'), {
             dataType: 'json',
             type: 'POST',

@@ -1,8 +1,3 @@
-var translation = {
-    'example of text' : 'the real text',
-    'Add' : 'add',
-    'add' : 'Add'
-}
 function translate (string) {
     return (translation[string] === undefined) ? string : translation[string];
 }
