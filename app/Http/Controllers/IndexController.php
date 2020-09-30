@@ -22,8 +22,10 @@ class IndexController extends Controller
         // handle the ajax request
         if ($request->expectsJson()) {
             return response()->json([
-                'products' => $productsList,
-                'myCart' => $myCart
+                'data' => [
+                    'products' => $productsList,
+                    'myCart' => $myCart
+                ]
             ]);
         }
 
@@ -42,16 +44,7 @@ class IndexController extends Controller
 
         // handle the ajax request
         if ($request->expectsJson()) {
-            if (isset($myCart) && is_array($myCart) && count($myCart)) {
-                $productsList = Product::productsOutsideCart($myCart)->get();
-            } else {
-                $productsList = Product::all();
-            }
-
-            return response()->json([
-                'products' => $productsList,
-                'myCart' => $myCart
-            ]);
+            return response()->json(['message' => 'Added to cart']);
         }
 
         return redirect()->route('index.index');

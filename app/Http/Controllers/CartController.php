@@ -24,8 +24,10 @@ class CartController extends Controller
 
         if ($request->expectsJson()) {
             return response()->json([
-                'products' => $productsList,
-                'myCart' => $myCart
+                'data' => [
+                    'products' => $productsList,
+                    'myCart' => $myCart
+                    ]
                 ]);
         }
 
@@ -73,7 +75,7 @@ class CartController extends Controller
 
         if ($request->expectsJson()) {
             return response()->json([
-                'status' => 'success'
+                'message' => 'Successfully stored'
             ]);
         }
 
@@ -94,7 +96,7 @@ class CartController extends Controller
                 $productsList = Product::all();
             }
 
-            return response()->json(['status' => 'success']);
+            return response()->json(['message' => 'Successfully removed from cart']);
         }
 
         return redirect(route('cart.index'));

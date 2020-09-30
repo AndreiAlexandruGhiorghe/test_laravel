@@ -39,7 +39,7 @@
         {{--        Add new product--}}
         <a href="#product/">{{ __('Add') }}</a>
 
-        <button name="logoutButton" onclick="router._products.logout()">{{ __('Logout') }}</button>
+        <button name="logoutButton" onclick="logout()">{{ __('Logout') }}</button>
     </div>
 
     <div class="page productForm">
@@ -58,7 +58,6 @@
             </tbody>
         </table>
     </div>
-
 
     {{--        Show one order--}}
     <div class="page order">

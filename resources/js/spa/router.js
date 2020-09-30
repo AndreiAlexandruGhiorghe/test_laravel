@@ -1,30 +1,31 @@
 function Router() {
-    this._index = new Index()
+    this.oldHash = undefined // begin as first route
     this.index = function() {
+        this._index = new Index()
         this._index.init()
     }
-    this._cart = new Cart()
     this.cart = function() {
+        this._cart = new Cart()
         this._cart.init()
     }
-    this._login = new Login()
     this.login = function() {
+        this._login = new Login()
         this._login.init()
     }
-    this._products = new Products()
     this.products = function() {
+        this._products = new Products()
         this._products.init()
     }
-    this._product = new Product()
     this.product = function() {
+        this._product = new Product()
         this._product.init()
     }
-    this._orders = new Orders()
     this.orders = function() {
+        this._orders = new Orders()
         this._orders.init()
     }
-    this._order = new Order()
     this.order = function() {
+        this._order = new Order()
         this._order.init()
     }
 }
@@ -36,10 +37,39 @@ $(document).ready(function () {
      * URL hash change handler
      */
     window.onhashchange = function () {
-
         // First hide all the pages
         $('.page').hide();
 
+        // delete the old content
+        switch(router.oldHash) {
+            case undefined:
+                // do nothing
+                // it's important to do not interference with index route that is the default route
+                break
+            case '#login':
+                router._login.destroy()
+                break;
+            case '#cart':
+                router._cart.destroy()
+                break;
+            case '#products':
+                router._products.destroy()
+                break;
+            case '#orders':
+                router._orders.destroy()
+                break;
+            default:
+                if (router.oldHash.match('(#product\/[1-9]+[0-9]*\/edit)|(#product)')) {
+                    router._product.destroy()
+                } else if (router.oldHash.match('(#order\/[1-9]+[0-9]*)')) {
+                    router._order.destroy()
+                } else {
+                    router._index.destroy()
+                }
+                break;
+        }
+
+        // create the new content on actual page
         switch(window.location.hash) {
             case '#login':
                 router.login()
@@ -63,6 +93,8 @@ $(document).ready(function () {
                 }
                 break;
         }
+        // updating the old hash to use it next time when the hash changes
+        router.oldHash = window.location.hash
     }
     window.onhashchange();
 });

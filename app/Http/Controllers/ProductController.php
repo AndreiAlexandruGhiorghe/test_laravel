@@ -51,7 +51,7 @@ class ProductController extends Controller
     public function index()
     {
         if (request()->expectsJson()) {
-            return response()->json(Product::all());
+            return response()->json(['data' => Product::all()]);
         }
         return view('product.index', ['products' => Product::all()]);
     }
@@ -67,7 +67,7 @@ class ProductController extends Controller
         $this->storeOrUpdate($request);
 
         if ($request->expectsJson()) {
-            return response()->json(['status' => 'success']);
+            return response()->json(['message' => 'Successfully stored']);
         }
 
         return redirect()->route('product.index');
@@ -83,7 +83,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if ($request->expectsJSON()) {
-            return response()->json(['product' => $product]);
+            return response()->json(['data' => ['product' => $product]]);
         }
 
         return view('product.edit', ['id' => $id, 'product' => $product]);
@@ -101,7 +101,7 @@ class ProductController extends Controller
         $this->storeOrUpdate($request, $id);
 
         if ($request->expectsJson()) {
-            return response()->json(['status' => 'success']);
+            return response()->json(['message' => 'Successfully updated']);
         }
 
         return redirect()->route('product.index');
@@ -115,11 +115,13 @@ class ProductController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-
         $product = Product::find($id);
         if ($product) {
             if (file_exists('/public/storage/images/' . $product->image_path)) {
                 if (!unlink('/public/storage/images/' . $product->image_path)) {
+                    if ($request->expectsJson()) {
+                        return response()->json(['message' => 'No file to delete']);
+                    }
                     return redirect()->route('product.index');
                 }
             }
@@ -127,7 +129,7 @@ class ProductController extends Controller
         }
 
         if ($request->expectsJson()) {
-            return response()->json(['status' => 'success']);
+            return response()->json(['message' => 'Successfully deleted']);
         }
 
         return redirect()->route('product.index');
@@ -135,10 +137,6 @@ class ProductController extends Controller
 
     public function add(Request $request)
     {
-        if ($request->expectsJson()) {
-            return response()->json(['redirect' => '#product'], 302);
-        }
-
         return view('product.edit');
     }
 }

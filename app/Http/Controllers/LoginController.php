@@ -9,7 +9,7 @@ class LoginController extends Controller
     public function show(Request $request)
     {
         if ($request->expectsJson()) {
-            return response()->json(['redirect' => '#login']);
+            return response()->json(['message' => 'Unauthorized, must login'], 401);
         }
         return view('login');
     }
@@ -28,18 +28,17 @@ class LoginController extends Controller
             $request->session()->put('idUser', $request->get('usernameField'));
             if ($request->expectsJson()) {
                 return response()->json([
-                    'message' => 'successfully logged in',
-                    'redirect' => '#products'
+                    'message' => 'successfully logged in'
                 ]);
             }
+
             return redirect()->route('product.index');
         }
 
         if ($request->expectsJson()) {
             return response()->json([
-                'message' => 'wrong username or password',
-                'redirect' => '#login'
-            ]);
+                'message' => 'wrong username or password'
+            ],401);
         }
         return redirect()->route('login.show');
     }
@@ -50,7 +49,7 @@ class LoginController extends Controller
 
         if ($request->expectsJson()) {
             return response()->json([
-                'message' => 'success'
+                'message' => 'Successfully loged out'
             ]);
         }
 

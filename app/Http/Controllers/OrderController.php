@@ -30,7 +30,7 @@ class OrderController extends Controller
         }
 
         if ($request->expectsJson()) {
-            return response()->json($priceOfOrder);
+            return response()->json(['data' => $priceOfOrder]);
         }
 
         return view('order.index', ['priceOfOrder' => $priceOfOrder]);
@@ -47,7 +47,7 @@ class OrderController extends Controller
         $order = Order::with('products')->find($id);
 
         if ($request->expectsJson()) {
-            return response()->json(['order' => $order]);
+            return response()->json(['data' => ['order' => $order]]);
         }
 
         return view('order.show', ['order' =>$order]);
