@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Option;
 use App\Models\Product;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -51,7 +52,9 @@ class ProductController extends Controller
     public function index()
     {
         if (request()->expectsJson()) {
-            return response()->json(['data' => Product::all()]);
+            return response()->json([
+                'data' => Product::with(['options', 'options.contents'])->get()
+            ]);
         }
         return view('product.index', ['products' => Product::all()]);
     }
@@ -81,7 +84,7 @@ class ProductController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $product = Product::find($id);
+        $product = Product::with(['options','options.contents'])->find($id);
         if ($request->expectsJSON()) {
             return response()->json(['data' => ['product' => $product]]);
         }

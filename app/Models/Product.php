@@ -13,10 +13,10 @@ class Product extends Model
         // building the query for the products from cart that
         $params = [];
         $queryString = 'inventory > CASE ';
-        foreach ($myCart as $idProduct => $quantity) {
+        foreach ($myCart as $idProduct => $products) {
             $queryString .= 'WHEN id = ? THEN ? ';
             $params[] = $idProduct;
-            $params[] = $quantity;
+            $params[] = count($products);
         }
         $queryString .= ' END';
 
@@ -30,5 +30,10 @@ class Product extends Model
     public function orders()
     {
         return $this->belongsToMany(Order::class, OrderProduct::class)->withPivot(['quantity']);
+    }
+
+    public function options()
+    {
+        return $this->hasMany(Option::class);
     }
 }

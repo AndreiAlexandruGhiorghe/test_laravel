@@ -1,5 +1,57 @@
 function Product () {
     this.id
+    this.addOption = function () {
+        var requestData = {
+            optionTitle: $('input[name="optionTitle"]')[0].value,
+            category1: $('input[name="category1"]')[0].value,
+            category2: $('input[name="category2"]')[0].value,
+            category3: $('input[name="category3"]')[0].value
+        }
+        $.ajax(route('option.store', [this.id]), {
+            dataType: 'json',
+            type: 'POST',
+            headers: {
+            'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+            },
+            data: requestData,
+            success: function (response) {
+                console.log(response)
+                window.onhashchange()
+            },
+            error: function (error) {
+                if (error.status === 409) {
+                    $('input[name="optionTitle"]')
+                        .after(`<span class="errorSpan">${translate('The title has been taken')}</span>`);
+                } else {
+                    $('.productForm table span').remove();
+                    if (error.responseJSON.errors !== undefined) {
+                        if (error.responseJSON.errors.optionTitle !== undefined) {
+                            $('input[name="optionTitle"]')
+                                .after(`<span class="errorSpan">${error.responseJSON.errors.optionTitle}</span>`);
+                        }
+
+                        if (error.responseJSON.errors.category1 !== undefined) {
+                            $('input[name="category1"]')
+                                .after(`<span class="errorSpan">${error.responseJSON.errors.category1}</span>`);
+                        }
+
+                        if (error.responseJSON.errors.category2 !== undefined) {
+                            $('input[name="category2"]')
+                                .after(`<span class="errorSpan">${error.responseJSON.errors.category2}</span>`);
+                        }
+
+                        if (error.responseJSON.errors.category3 !== undefined) {
+                            $('input[name="category3"]')
+                                .after(`<span class="errorSpan">${error.responseJSON.errors.category3}</span>`);
+                        }
+                    }
+                }
+            }
+        })
+    }
+    this.addCategory = function () {
+        console.log('add category')
+    }
     this.submitForm = function () {
         var form = $('form')[0]; // You need to use standard javascript object here
         var formData = new FormData(form);
@@ -93,7 +145,7 @@ function Product () {
             ${translate('Choose an Image: Click Here!')}
             </label>
             <input onchange="changeLabel()" type="file" id="inputFileId" style="display:none" name="file">
-            </td></tr>
+            </tr></td>
             <tr><td>
             <a href="#products">
             ${translate('Products')}
@@ -103,7 +155,51 @@ function Product () {
             </td></tr>
             </tr></td>
             </tbody></table>
-            </form>`
+            </form>
+            <table><tbody>
+            ${params.product.options.map((option, i) => `
+            <tr>
+            <td>
+            <h4>${option.title}</h4>
+            ${option.contents.map((optionContent, i) => `
+            ${optionContent.content}<br>
+            `.trim()).join('')}
+            </td>
+            </tr>
+            `.trim()).join('')}
+            <tr><td>
+            <p>New Option</p>
+            <tr><td>
+            <form>
+            <tr>
+            <td>
+            <input type="text" name="optionTitle" placeholder="${translate('Title')}">
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <input type="text" name="category1" placeholder="${translate('category')}">
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <input type="text" name="category2" placeholder="${translate('category')}">
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <input type="text" name="category3" placeholder="${translate('category')}">
+            </td>
+            </tr>
+            <tr><td>
+            <button type="submit" onclick="router._product.addCategory()">${translate('Add Category')}</button>
+            </td></tr>
+            </form>
+            </td></tr>
+            <tr><td>
+            <button onsubmit="router._product.addOption()" name="submitOption">${translate('Save Option')}</button>
+            </td></tr>
+            </tbody></table>`
 
         return html;
     }
@@ -130,6 +226,12 @@ function Product () {
                     $('.page.productForm form input[name="price"]').val(response.data.product.price)
                     $('.page.productForm form input[name="inventory"]').val(response.data.product.inventory)
                     $('.page.productForm form label').html(response.data.product.image_path)
+
+                    $('button[name="submitOption"]')
+                        .on('click', (e) => {
+                            e.preventDefault()
+                            this.addOption()
+                        })
                 },
                 error: (error) => {
                     if (error.status === 401) {

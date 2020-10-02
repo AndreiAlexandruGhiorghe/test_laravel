@@ -1,11 +1,18 @@
 function Index() {
     this.addFunction = function(idProduct) {
+        var data = {}
+        $.each($(`tr.${idProduct} select`), function(key, element){
+            var aux = element.options[element.selectedIndex].getAttribute('name')
+            // data['options'] = {}
+            data[element.name] = aux
+        })
         $.ajax(route('index.update', [idProduct]), {
             dataType: 'json',
             type: 'PUT',
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
+            data: data,
             success: (response) => {
                 // refresh the page
                 window.onhashchange();
@@ -19,7 +26,7 @@ function Index() {
                 ? params.myCart[product.id]
                 : 0) > 0) {
                 html +=
-                    `<tr>
+                    `<tr class="${product.id}">
                     <td>
                     <img src="/storage/images/${product.image_path}" class="phoneImage">
                     </td>
@@ -31,11 +38,23 @@ function Index() {
                         ? params.myCart[product.id]
                         : 0)} left<br>
                     <td>
+                    ${product.options.map((option, i) => `
+                    <td>
+                    <label for="cars">${option.title}</label>
+                    <select name="${option.id}">
+                    ${option.contents.map((optionContent, i) => `
+                    <option name="${optionContent.id}" value="${optionContent.id}">${optionContent.content}</option>
+                    `.trim()).join('')}
+                    </select>
+                    </td>
+                    `.trim()).join('')}
+                    </td>
+                    <td>
                     <button onclick="router._index.addFunction(${product.id})">Add</button>
                     </td>
                     </tr>`
             }
-        });
+        })
 
         return html;
     }
@@ -50,6 +69,9 @@ function Index() {
                 $('.index .list tbody').html(this.renderIndexList(response.data));
                 // update the local cart
                 myCart = response['myCart'];
+            },
+            error: (error) => {
+                console.log(error)
             }
         });
     }

@@ -41,3 +41,7 @@ Route::get('/order/{order}', 'OrderController@show')->name('order.show');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/spa', 'SpaController@index')->name('spa.index');
+
+Route::middleware(['login'])->group(function () {
+    Route::post('/product/{product}/option', 'OptionController@store')->name('option.store');
+});

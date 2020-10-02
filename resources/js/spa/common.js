@@ -76,6 +76,9 @@ const routes = {
         show: '/login',
         store: '/login',
         destroy: '/login/signout'
+    },
+    option: {
+        store: '/product/{product}/option'
     }
 }
 
