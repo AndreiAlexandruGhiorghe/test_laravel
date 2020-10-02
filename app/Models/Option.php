@@ -11,10 +11,8 @@ class Option extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function contents()
+    public function orderProduct()
     {
-        return $this->hasMany(OptionContent::class);
+        return $this->hasOne(OrderProduct::class);
     }
-
-
 }

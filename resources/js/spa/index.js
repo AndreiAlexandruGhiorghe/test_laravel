@@ -1,14 +1,23 @@
 function Index() {
     this.addFunction = function(idProduct) {
+        var aux = $(`select[name="${idProduct}"]`)[0]
+        const option = aux.options[aux.selectedIndex].getAttribute('name')
         $.ajax(route('index.update', [idProduct]), {
             dataType: 'json',
             type: 'PUT',
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
+            data: {
+                option
+            },
             success: (response) => {
+                console.log(response)
                 // refresh the page
-                window.onhashchange();
+                // window.onhashchange();
+            },
+            error: (error) => {
+                console.log(error)
             }
         });
     }
@@ -27,8 +36,15 @@ function Index() {
                             ${product.description}<br>
                             ${product.price} euro<br>
                             ${product.inventory - (params.myCart.hasOwnProperty(product.id)
-                                ? params.myCart[product.id]
+                                ? params.myCart[product.id.length]
                                 : 0)} left<br>
+                        </td>
+                        <td>
+                        <select name="${product.id}">
+                            ${product.options.map((option) => `<option name="${option.id}">
+                                                                    ${option.name}
+                                                                </option>`).join('')}
+                        </select>
                         </td>
                         <td>
                             <button onclick="router._index.addFunction(${product.id})">Add</button>

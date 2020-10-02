@@ -15,9 +15,9 @@ class IndexController extends Controller
         $myCart = $request->session()->get('myCart', []);
 
         if (isset($myCart) && is_array($myCart) && count($myCart)) {
-            $productsList = Product::with(['options','options.contents'])->productsOutsideCart($myCart)->get();
+            $productsList = Product::with(['options'])->productsOutsideCart($myCart)->get();
         } else {
-            $productsList = Product::with(['options','options.contents'])->get();
+            $productsList = Product::with(['options'])->get();
         }
 
         // handle the ajax request
@@ -38,11 +38,13 @@ class IndexController extends Controller
         // retrieving data from cart or an empty array in case of myCart's absence
         $myCart = $request->session()->get('myCart', []);
 
-            if (!isset($myCart[strval($product->id)])) {
-                $myCart[$product->id] = [];
-            }
-            $myCart[$product->id] += $request;//json_decode($request,true);
-        return response()->json($request, 404);
+        if (!isset($myCart[strval($product->id)])) {
+            $myCart[$product->id] = [];
+        }
+        $myCart[$product->id][$request->option] = isset($myCart[$product->id][$request->option])
+            ? $myCart[$product->id][$request->option] + 1
+            : 1;
+
         // add myCart to session
         $request->session()->put('myCart', $myCart);
 

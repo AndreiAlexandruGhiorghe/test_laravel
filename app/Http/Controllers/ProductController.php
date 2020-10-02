@@ -53,7 +53,7 @@ class ProductController extends Controller
     {
         if (request()->expectsJson()) {
             return response()->json([
-                'data' => Product::with(['options', 'options.contents'])->get()
+                'data' => Product::with(['options'])->get()
             ]);
         }
         return view('product.index', ['products' => Product::all()]);
@@ -84,9 +84,9 @@ class ProductController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $product = Product::with(['options','options.contents'])->find($id);
+        $product = Product::with(['options'])->find($id);
         if ($request->expectsJSON()) {
-            return response()->json(['data' => ['product' => $product]]);
+            return response()->json(['data' => $product]);
         }
 
         return view('product.edit', ['id' => $id, 'product' => $product]);

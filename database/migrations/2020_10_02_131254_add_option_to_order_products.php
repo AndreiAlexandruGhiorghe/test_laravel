@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOptionContentsTable extends Migration
+class AddOptionToOrderProducts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateOptionContentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('option_contents', function (Blueprint $table) {
-            $table->id();
+        Schema::table('order_products', function (Blueprint $table) {
             $table->unsignedBigInteger('option_id')->index();
-            $table->string('content', 255);
-            $table->timestamps();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateOptionContentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('option_contents');
+        Schema::table('order_products', function (Blueprint $table) {
+            //
+        });
     }
 }

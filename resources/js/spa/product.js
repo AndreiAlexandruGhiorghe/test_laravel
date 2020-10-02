@@ -1,5 +1,33 @@
 function Product () {
     this.id
+    this.submitOption = function () {
+        const optionName = $('#optionForm input[name="optionName"]')[0].value
+        $.ajax(route('option.store',[this.id]), {
+            dataType: 'json',
+            type: 'POST',
+            headers: {
+                'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+            },
+            data: {
+                optionName
+            },
+            success: function (response) {
+                window.onhashchange()
+            },
+            error: function (error) {
+                $('#optionForm span').remove()
+                if (error.status === 400) {
+                    $('input[name="optionName"]')
+                        .after(`<span class="errorSpan">${translate('The option allready exists')}</span>`);
+                } else {
+                    if (error.responseJSON.errors.optionName !== undefined) {
+                        $('input[name="optionName"]')
+                            .after(`<span class="errorSpan">${error.responseJSON.errors.optionName}</span>`);
+                    }
+                }
+            }
+        })
+    }
     this.submitForm = function () {
         var form = $('form')[0]; // You need to use standard javascript object here
         var formData = new FormData(form);
@@ -122,7 +150,31 @@ function Product () {
                         </tr>
                     </tbody>
                 </table>
-            </form>`
+            </form>
+            ${(addPage)
+                ? ''
+                :`${params.options.map((option) => `<td>${option.name}</td>`).join('<br>')}
+            <form id="optionForm">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p>Title</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" name="optionName">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="submit" name="submitOption">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>`}`
 
         return html;
     }
@@ -144,11 +196,11 @@ function Product () {
                 type: 'GET',
                 success: (response) => {
                     $('.page.productForm').html(this.renderProductForm(response.data))
-                    $('.page.productForm form input[name="title"]').val(response.data.product.title)
-                    $('.page.productForm form input[name="description"]').val(response.data.product.description)
-                    $('.page.productForm form input[name="price"]').val(response.data.product.price)
-                    $('.page.productForm form input[name="inventory"]').val(response.data.product.inventory)
-                    $('.page.productForm form label').html(response.data.product.image_path)
+                    $('.page.productForm form input[name="title"]').val(response.data.title)
+                    $('.page.productForm form input[name="description"]').val(response.data.description)
+                    $('.page.productForm form input[name="price"]').val(response.data.price)
+                    $('.page.productForm form input[name="inventory"]').val(response.data.inventory)
+                    $('.page.productForm form label').html(response.data.image_path)
                 },
                 error: (error) => {
                     if (error.status === 401) {
@@ -157,9 +209,14 @@ function Product () {
                     }
                 }
             }).then(() => {
-                $('.productForm form input[type="submit"]').on('click', (e) => {
+                $('.productForm form:first-child input[type="submit"]').on('click', (e) => {
                     e.preventDefault()
                     this.submitForm()
+                })
+
+                $('#optionForm input[type="submit"]').on('click', (e) => {
+                    e.preventDefault()
+                    router._product.submitOption()
                 })
             })
         }
