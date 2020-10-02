@@ -43,23 +43,25 @@ function Login() {
         });
     }
     this.renderLogin = function () {
-        html =
-            `<tr>
-            <td>
-            <input type="text" name="usernameField" placeholder="username">
-            </td>
+        html = `<tr>
+                <td>
+                    <input type="text" name="usernameField" placeholder="username">
+                </td>
             </tr>
             <tr>
-            <td>
-            <input type="password" name="passwordField" placeholder="password">
-            </td>
+                <td>
+                    <input type="password" name="passwordField" placeholder="password">
+                </td>
             </tr>
             <tr>
-            <td>
-            <button
-            name="loginButton"
-            onclick="router._login.loginFunction()">${translate('Login')}</button>
-            </td>
+                <td>
+                    <button
+                    name="loginButton"
+                    onclick="router._login.loginFunction()"
+                    >
+                        ${translate('Login')}
+                    </button>
+                </td>
             </tr>`
         return html
     }

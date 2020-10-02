@@ -2,33 +2,39 @@ function Order () {
     this.id = undefined
     this.renderOrder = function ( params) {
         var html=``;
-        $.each(params.order.products, function (key, product) {
-            html +=
-                `<tr>
-                <td>
-                <img src="/storage/images/${product.image_path}" class="phoneImage">
-                </td>
-                <td>
-                ${product.title}<br>
-                ${product.description}<br>
-                ${product.price} euro<br>
-                ${product.pivot.quantity} ${translate('buc')}<br>
-                </td>
+        $.each(params.products, function (key, product) {
+            html += `<tr>
+                    <td>
+                        <img src="/storage/images/${product.image_path}" class="phoneImage">
+                    </td>
+                    <td>
+                        ${product.title}<br>
+                        ${product.description}<br>
+                        ${product.price} euro<br>
+                        ${product.pivot.quantity} ${translate('buc')}<br>
+                    </td>
                 </tr>`
         });
-        html +=
-            `<tr><td>
-            Created at: ${((params.order.created_at) ? params.order.created_at : '')}
-            </td></tr>
-            <tr><td>
-            Name: ${((params.order.name) ? params.order.name : '')}
-            </td></tr>
-            <tr><td>
-            Address: ${((params.order.address) ? params.order.address : '')}
-            </td></tr>
-            <tr><td>
-            Comments: ${((params.order.comments) ? params.order.comments : '')}
-            </td></tr>`
+        html += `<tr>
+                <td>
+                    Created at: ${((params.created_at) ? params.created_at : '')}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Name: ${((params.name) ? params.name : '')}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Address: ${((params.address) ? params.address : '')}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Comments: ${((params.comments) ? params.comments : '')}
+                </td>
+            </tr>`
 
         return html
     }

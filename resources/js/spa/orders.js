@@ -2,13 +2,18 @@ function Orders () {
     this.renderOrdersList = function (response) {
         var html = ``
         $.each(response, function(nrOrder, order) {
-            html +=
-                `<tr><td>
-                ${order}
-                </td></tr>
-                <tr><td>
-                <a href="#order/${nrOrder}">${translate('see Order')}</a>
-                </td></tr>`
+            html += `<tr>
+                    <td>
+                        ${order}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#order/${nrOrder}">
+                            ${translate('see Order')}
+                        </a>
+                    </td>
+                </tr>`
         })
 
         return html

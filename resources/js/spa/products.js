@@ -15,31 +15,21 @@ function Products () {
         var html=``;
 
         $.each(params, function (key, product) {
-            html +=
-                `<tr>
-                <td>
-                <img src="/storage/images/${product.image_path}" class="phoneImage">
-                </td>
-                <td>
-                ${product.title}<br>
-                ${product.description}<br>
-                ${product.price} ${translate('euro')}<br>
-                ${product.inventory} ${translate('left')}<br>
-                </td>
-                ${product.options.map((option, i) => `
-                <td>
-                ${option.title}<br><br>
-                ${option.contents.map((optionContent, i) => `
-                ${optionContent.content}<br>
-                `.trim()).join('')}
-                </td>
-                `.trim()).join('')}
-                <td>
-                <a href="#product/${product.id}/edit">${translate('Edit')}</a>
-                </td>
-                <td>
-                <button onclick="router._products.delete(${product.id})">${translate('Delete')}</button>
-                </td>
+            html += `<tr>
+                    <td>
+                        <img src="/storage/images/${product.image_path}" class="phoneImage">
+                    </td>
+                    <td>
+                        ${product.title}<br>
+                        ${product.description}<br>
+                        ${product.price} ${translate('euro')}<br>
+                        ${product.inventory} ${translate('left')}<br>
+                    <td>
+                        <a href="#product/${product.id}/edit">${translate('Edit')}</a>
+                    </td>
+                    <td>
+                        <button onclick="router._products.delete(${product.id})">${translate('Delete')}</button>
+                    </td>
                 </tr>`
         });
 
@@ -52,7 +42,6 @@ function Products () {
         $.ajax(route('product.index'), {
             dataType: 'json',
             success: (response) => {
-                console.log(response)
                 // Render the products in the cart list
                 $('.product .list').html(this.renderProductList(response.data));
             },
