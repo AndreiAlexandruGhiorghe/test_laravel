@@ -51,6 +51,14 @@ function logout () {
     })
 }
 
+function countTheProducts(product) {
+    var returnValue = 0;
+    Object.keys(product).map((optionId)=>{
+        returnValue += product[parseInt(optionId)]
+    })
+    return returnValue
+}
+
 const routes = {
     product: {
         index: '/product',

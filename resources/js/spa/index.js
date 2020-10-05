@@ -1,7 +1,9 @@
 function Index() {
     this.addFunction = function(idProduct) {
         var aux = $(`select[name="${idProduct}"]`)[0]
-        const option = aux.options[aux.selectedIndex].getAttribute('name')
+        const option = (aux.options.length > 0)
+            ? aux.options[aux.selectedIndex].getAttribute('name')
+            : 0
         $.ajax(route('index.update', [idProduct]), {
             dataType: 'json',
             type: 'PUT',
@@ -12,12 +14,8 @@ function Index() {
                 option
             },
             success: (response) => {
-                console.log(response)
                 // refresh the page
-                // window.onhashchange();
-            },
-            error: (error) => {
-                console.log(error)
+                window.onhashchange();
             }
         });
     }
@@ -25,7 +23,7 @@ function Index() {
         var html=``;
         $.each(params.products, function (key, product) {
             if (product.inventory - (params.myCart.hasOwnProperty(product.id)
-                ? params.myCart[product.id]
+                ? countTheProducts(params.myCart[product.id])
                 : 0) > 0) {
                 html += `<tr>
                         <td>
@@ -36,7 +34,7 @@ function Index() {
                             ${product.description}<br>
                             ${product.price} euro<br>
                             ${product.inventory - (params.myCart.hasOwnProperty(product.id)
-                                ? params.myCart[product.id.length]
+                                ? countTheProducts(params.myCart[product.id])
                                 : 0)} left<br>
                         </td>
                         <td>
